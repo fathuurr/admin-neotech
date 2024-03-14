@@ -118,34 +118,35 @@ export const navItems: NavItem[] = [
     icon: "dashboard",
     label: "Dashboard",
   },
+
+  {
+    title: "Product",
+    href: "/dashboard/product",
+    icon: "product",
+    label: "product",
+  },
+  {
+    title: "Product Category",
+    href: "/dashboard/product-category",
+    icon: "productCategory",
+    label: "productCategory",
+  },
+  {
+    title: "Product Complementary Data",
+    href: "/dashboard/product-complementary",
+    icon: "productComplementary",
+    label: "productComplementary",
+  },
+  {
+    title: "Warranty",
+    href: "/dashboard/warranty",
+    icon: "warranty",
+    label: "warranty",
+  },
   {
     title: "User",
     href: "/dashboard/user",
     icon: "user",
     label: "user",
-  },
-  {
-    title: "Employee",
-    href: "/dashboard/employee",
-    icon: "employee",
-    label: "employee",
-  },
-  {
-    title: "Profile",
-    href: "/dashboard/profile",
-    icon: "profile",
-    label: "profile",
-  },
-  {
-    title: "Kanban",
-    href: "/dashboard/kanban",
-    icon: "kanban",
-    label: "kanban",
-  },
-  {
-    title: "Login",
-    href: "/",
-    icon: "login",
-    label: "login",
   },
 ];
