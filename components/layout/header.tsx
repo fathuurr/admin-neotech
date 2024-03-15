@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 "use client";
 import ThemeToggle from "@/components/layout/ThemeToggle/theme-toggle";
 import { cn } from "@/lib/utils";
@@ -14,11 +15,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "lucide-react";
+
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
 
 export default function Header() {
   const router = useRouter();
+  const [namaLengkap, setNamaLengkap] = useState("");
 
   const onLogout = () => {
     Cookies.remove("accessToken");
@@ -28,6 +33,20 @@ export default function Header() {
   const pageSettings = () => {
     router.push("/dashboard/settings");
   };
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        const { namaLengkap } = decodedToken;
+        setNamaLengkap(namaLengkap);
+      } catch (error) {
+        console.log("Error decoding token:", error);
+      }
+    }
+  }, []);
   return (
     <div className="fixed top-0 left-0 right-0 supports-backdrop-blur:bg-background/60 border-b bg-background/95 backdrop-blur z-20">
       <nav className="h-14 flex items-center justify-between px-4">
@@ -60,7 +79,7 @@ export default function Header() {
               <User />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel> {namaLengkap} </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="cursor-pointer">
                 Profile
