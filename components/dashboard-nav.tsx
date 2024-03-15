@@ -1,11 +1,12 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+import { NavItem } from "@/types";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { NavItem } from "@/types";
 import { Dispatch, SetStateAction } from "react";
 
 interface DashboardNavProps {
@@ -15,14 +16,38 @@ interface DashboardNavProps {
 
 export function DashboardNav({ items, setOpen }: DashboardNavProps) {
   const path = usePathname();
+  const [userRole, setUserRole] = useState<string | null>(null);
 
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        setUserRole(decodedToken.role);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log("Error decoding token:", error);
+      }
+    }
+  }, []);
+
+  if (!items?.length || userRole === null) {
+    return null;
+  }
+
+  const filteredItems = items.filter((item) => {
+    if (item.title === "User" && userRole !== "superAdmin") {
+      return false;
+    }
+    return true;
+  });
   if (!items?.length) {
     return null;
   }
 
   return (
     <nav className="grid items-start gap-2">
-      {items.map((item, index) => {
+      {filteredItems.map((item, index) => {
         const Icon = Icons[item.icon || "arrowRight"];
         return (
           item.href && (
