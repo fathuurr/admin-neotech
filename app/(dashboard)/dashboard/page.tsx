@@ -1,20 +1,7 @@
-import { CalendarDateRangePicker } from "@/components/date-range-picker";
-
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Product } from "@/types/product";
+
 import axios from "axios";
-import { Table } from "lucide-react";
 
 async function getDataProduct() {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product`);
@@ -32,10 +19,6 @@ export default async function page() {
           <h2 className="text-3xl font-bold tracking-tight">
             Hi, Welcome back 👋
           </h2>
-          <div className="hidden md:flex items-center space-x-2">
-            <CalendarDateRangePicker />
-            <Button>Download</Button>
-          </div>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
@@ -57,7 +40,7 @@ export default async function page() {
               </svg>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+12,234</div>
+              <div className="text-2xl font-bold"> +{data.length} </div>
               <p className="text-xs text-muted-foreground">Total Product</p>
             </CardContent>
           </Card>
@@ -84,61 +67,6 @@ export default async function page() {
             </CardContent>
           </Card>
         </div>
-      </div>
-
-      <div className="container mx-auto">
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
-                Product Number
-              </th>
-              <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
-                Product Name
-              </th>
-              <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
-                Product Category
-              </th>
-              {/* <th className='px-4 py-4 font-medium text-black dark:text-white'>
-                  Actions
-                </th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item: Product) => (
-              <tr key={item._id}>
-                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
-                  <h5 className="font-medium text-black dark:text-white">
-                    {item.productNumber}
-                  </h5>
-                </td>
-                <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {item.productName}
-                  </p>
-                </td>
-                <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {item.productCategory.categoryName}
-                  </p>
-                </td>
-                {/* <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                    <div className="flex items-center space-x-3.5">
-                      <button className="hover:text-primary">
-                        <BiCommentDetail size={20} />
-                      </button>
-                      <button className="hover:text-primary">
-                        <MdOutlineEdit size={20} />
-                      </button>
-                      <button className="hover:text-primary">
-                        <AiOutlineDelete size={20} />
-                      </button>
-                    </div>
-                  </td> */}
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
     </ScrollArea>
   );
