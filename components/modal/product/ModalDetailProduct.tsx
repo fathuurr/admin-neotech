@@ -55,7 +55,7 @@ const ModalDetailProduct = ({ product }: any) => {
           <span className="font-semibold mb-2">Product Image :</span>
           <div className="mt-2 grid grid-cols-2 md:grid-cols-3 gap-10">
             {Array.isArray(productDetail?.productImage) &&
-              productDetail.productImage.map(
+              productDetail?.productImage.map(
                 (imageUrl: string, index: number) => (
                   <div key={index} className="relative">
                     <img

@@ -20,9 +20,14 @@ import { useRouter } from "next/navigation";
 
 export default function Header() {
   const router = useRouter();
+
   const onLogout = () => {
     Cookies.remove("accessToken");
     router.push("/");
+  };
+
+  const pageSettings = () => {
+    router.push("/dashboard/settings");
   };
   return (
     <div className="fixed top-0 left-0 right-0 supports-backdrop-blur:bg-background/60 border-b bg-background/95 backdrop-blur z-20">
@@ -58,9 +63,18 @@ export default function Header() {
             <DropdownMenuContent>
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem onClick={onLogout}>Logout</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={pageSettings}
+              >
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={onLogout}>
+                Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <ThemeToggle />

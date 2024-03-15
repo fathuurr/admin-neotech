@@ -8,3 +8,16 @@ export type User = {
   password: string;
   retype_password: string;
 };
+
+export type UpdateUser = {
+  namaLengkap: string;
+  noTelp: string;
+  email: string;
+  username: string;
+};
+
+export type ChangePassword = {
+  oldPassword: string;
+  newPassword: string;
+  retypePassword: string;
+};
