@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "../../ui/input";
-import { FileUp } from "lucide-react";
+import { FileUp, Trash } from "lucide-react";
 import { Button } from "../../ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -32,6 +32,11 @@ const ModalUploadPhoto = ({ product }: any) => {
       const imageUrl = URL.createObjectURL(files[0]);
       setImagePreview(imageUrl);
     }
+  };
+
+  const deleteFile = () => {
+    setSelectedFile(null);
+    setImagePreview(null);
   };
 
   const onSubmit = async () => {
@@ -86,13 +91,20 @@ const ModalUploadPhoto = ({ product }: any) => {
           />
 
           {imagePreview && (
-            <Image
-              src={imagePreview}
-              width={100}
-              height={100}
-              alt="Preview"
-              className="mt-4 w-full max-h-64 object-contain"
-            />
+            <>
+              <Image
+                src={imagePreview}
+                width={100}
+                height={100}
+                alt="Preview"
+                className="mt-4 w-full max-h-64 object-contain"
+              />
+
+              <Trash
+                className="h-4 w-4 text-red-500 cursor-pointer"
+                onClick={deleteFile}
+              />
+            </>
           )}
         </div>
         <DialogFooter>
