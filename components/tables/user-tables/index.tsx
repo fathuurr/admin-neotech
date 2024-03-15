@@ -5,18 +5,25 @@ import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { User } from "@/types/user";
 import { Input } from "@/components/ui/input";
 import { Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/modal/alert-modal";
 import { toast } from "@/components/ui/use-toast";
+import { ModalUpdateUser } from "@/components/modal/user/UpdateUser";
+
+interface UserTypes {
+  _id: string;
+  namaLengkap: string;
+  noTelp: string;
+  email: string;
+  username: string;
+  role: string;
+}
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
@@ -52,7 +59,7 @@ const UserTable = () => {
       });
     } else {
       toast({
-        title: "Berhasil delete product",
+        title: "Berhasil delete user",
       });
       window.location.reload();
     }
@@ -82,14 +89,15 @@ const UserTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredUsers.map((user: User) => (
+            {filteredUsers.map((user: UserTypes) => (
               <TableRow key={user._id}>
                 <TableCell>{user.namaLengkap}</TableCell>
                 <TableCell>{user.noTelp}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.username}</TableCell>
                 <TableCell>{user.role}</TableCell>
-                <TableCell>
+                <TableCell className="flex items-center">
+                  <ModalUpdateUser userId={user} />
                   <Trash2
                     onClick={() => {
                       setOpen(true);

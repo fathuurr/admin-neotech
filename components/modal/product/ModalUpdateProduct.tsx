@@ -65,9 +65,9 @@ export function ModalUpdateProduct({ product }: any) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add your product</DialogTitle>
+          <DialogTitle>Update product</DialogTitle>
           <DialogDescription>
-            Add your product here. Click save when youre done.
+            Update your product here. Click save when youre done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

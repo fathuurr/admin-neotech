@@ -22,3 +22,14 @@ export async function deleteUser(id: string) {
     token: true,
   });
 }
+
+export async function updateUserBySuperAdmin(data: User, id: string) {
+  const url = `${URL}/super-admin/update-user/${id}`;
+
+  return callAPI({
+    url,
+    method: "PUT",
+    token: true,
+    data,
+  });
+}
