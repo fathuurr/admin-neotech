@@ -1,10 +1,10 @@
-import callAPI from '@/config/api';
+import callAPI from "@/config/api";
 import {
   CategoryProduct,
   ComplementaryProduct,
   PostDataProduct,
-} from '@/types/product';
-import axios from 'axios';
+} from "@/types/product";
+import axios from "axios";
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -15,7 +15,7 @@ export async function categoryProduct(data: CategoryProduct) {
 
   return callAPI({
     url,
-    method: 'POST',
+    method: "POST",
     data,
     token: true,
   });
@@ -32,7 +32,7 @@ export async function deleteCategoryProduct(id: string) {
 
   return callAPI({
     url,
-    method: 'DELETE',
+    method: "DELETE",
     token: true,
   });
 }
@@ -42,7 +42,7 @@ export async function updateCategory(data: CategoryProduct, id: string) {
 
   return callAPI({
     url,
-    method: 'PUT',
+    method: "PUT",
     data,
     token: true,
   });
@@ -69,7 +69,7 @@ export async function postProduct(data: PostDataProduct) {
 
   return callAPI({
     url,
-    method: 'POST',
+    method: "POST",
     data,
     token: true,
   });
@@ -80,7 +80,7 @@ export async function updateProduct(data: PostDataProduct, id: string) {
 
   return callAPI({
     url,
-    method: 'PUT',
+    method: "PUT",
     data,
     token: true,
   });
@@ -91,7 +91,7 @@ export async function deleteProduct(id: string) {
 
   return callAPI({
     url,
-    method: 'DELETE',
+    method: "DELETE",
     token: true,
   });
 }
@@ -103,7 +103,7 @@ export async function uploadPhotoProduct(data: FormData, id: string) {
 
   return callAPI({
     url,
-    method: 'POST',
+    method: "POST",
     token: true,
     data,
   });
@@ -123,7 +123,20 @@ export async function postDataComplementary(data: ComplementaryProduct) {
 
   return callAPI({
     url,
-    method: 'POST',
+    method: "POST",
+    token: true,
+    data,
+  });
+}
+
+// Delete Photo Product
+
+export async function deletePhotoProduct(id: string, data: any) {
+  const url = `${URL}/product/${id}/delete-photo`;
+
+  return callAPI({
+    url,
+    method: "DELETE",
     token: true,
     data,
   });

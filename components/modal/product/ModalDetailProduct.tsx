@@ -3,12 +3,12 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { getProductById } from "@/service/product";
+import { toast } from "@/components/ui/use-toast";
+import { deletePhotoProduct, getProductById } from "@/service/product";
 import { Product } from "@/types/product";
 import { ScrollText, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -22,12 +22,42 @@ const ModalDetailProduct = ({ product }: any) => {
         const data = await getProductById(product);
         setProductDetail(data);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log("Error fetching product detail:", error);
       }
     };
 
     fetchProductDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const deletePhoto = async (path: string) => {
+    try {
+      const requestBody = {
+        path: path,
+      };
+
+      const res = await deletePhotoProduct(
+        productDetail?._id || "",
+        requestBody,
+      );
+
+      if (res) {
+        const updatedProductDetail = await getProductById(
+          productDetail?._id || "",
+        );
+        setProductDetail(updatedProductDetail);
+      } else {
+        toast({
+          title: "Failed to delete photo",
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: error.message,
+      });
+    }
+  };
 
   return (
     <Dialog>
@@ -65,7 +95,13 @@ const ModalDetailProduct = ({ product }: any) => {
                       loading="lazy"
                     />
 
-                    <Trash2 className="text-red-500 mt-5" size={20} />
+                    <Trash2
+                      onClick={() => {
+                        deletePhoto(imageUrl);
+                      }}
+                      className="text-red-500 mt-5 cursor-pointer "
+                      size={20}
+                    />
                   </div>
                 ),
               )}
