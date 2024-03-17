@@ -7,16 +7,24 @@ import { useRouter } from "next/navigation";
 
 import { useCallback, useEffect, useState } from "react";
 import { getProduct } from "@/service/product";
+import { getUser } from "@/service/user";
 
 export default function page() {
   const router = useRouter();
 
   const [product, setProduct] = useState([]);
+  const [user, setUser] = useState([]);
 
   const productList = useCallback(async () => {
     const res = await getProduct();
 
     setProduct(res);
+  }, []);
+
+  const userList = useCallback(async () => {
+    const res = await getUser();
+
+    setUser(res.data.data);
   }, []);
 
   useEffect(() => {
@@ -29,6 +37,7 @@ export default function page() {
 
   useEffect(() => {
     productList();
+    userList();
   }, []);
 
   return (
@@ -81,7 +90,7 @@ export default function page() {
               </svg>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+573</div>
+              <div className="text-2xl font-bold"> +{user.length} </div>
               <p className="text-xs text-muted-foreground">Total User</p>
             </CardContent>
           </Card>
