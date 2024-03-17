@@ -129,6 +129,17 @@ export async function postDataComplementary(data: ComplementaryProduct) {
   });
 }
 
+export async function deleteSerialNumber(id: string, data: any) {
+  const url = `${URL}/product/${id}/serial-number`;
+
+  return callAPI({
+    url,
+    method: "DELETE",
+    token: true,
+    data,
+  });
+}
+
 // Delete Photo Product
 
 export async function deletePhotoProduct(id: string, data: any) {

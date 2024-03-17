@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import { getDataComplementary } from "@/service/product";
+import { deleteSerialNumber, getDataComplementary } from "@/service/product";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 
 import {
@@ -12,10 +12,31 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
+import { Trash } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
+import { AlertModal } from "@/components/modal/alert-modal";
+
+interface ComplementaryData {
+  _id: string;
+  product: {
+    _id: string;
+    productNumber: string;
+    productName: string;
+    productCategory: {
+      categoryName: string;
+    };
+  };
+  serialNumber: string;
+  macAddress: string;
+}
 
 const ProductComplementaryTable = () => {
-  const [complementaryData, setComplementaryData] = useState([]);
+  const [complementaryData, setComplementaryData] = useState<
+    ComplementaryData[]
+  >([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [deleteId, setDeleteId] = useState("");
+  const [open, setOpen] = useState(false);
 
   const getComplementaryList = useCallback(async () => {
     const res = await getDataComplementary();
@@ -30,6 +51,42 @@ const ProductComplementaryTable = () => {
     setSearchTerm(event.target.value);
   };
 
+  const removeSerialNumber = async (serialNumber: string) => {
+    try {
+      const productId = complementaryData.find(
+        (item) => item.serialNumber === serialNumber,
+      )?.product?._id;
+
+      if (!productId) {
+        toast({
+          title: "Invalid ID",
+        });
+        return;
+      }
+
+      const requestBody = { serialNumber };
+
+      const res = await deleteSerialNumber(productId, requestBody);
+
+      if (res) {
+        toast({
+          title: res.message,
+          className: "bg-green-500",
+        });
+      } else {
+        toast({
+          title: "Error deleting serial number",
+        });
+      }
+
+      getComplementaryList();
+    } catch (error: any) {
+      toast({
+        title: error,
+      });
+    }
+  };
+
   const filteredData = complementaryData.filter(
     (item: any) =>
       item.serialNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -39,6 +96,14 @@ const ProductComplementaryTable = () => {
   const showNoDataMessage = filteredData.length === 0 && searchTerm !== "";
   return (
     <>
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={() => {
+          removeSerialNumber(deleteId);
+          setOpen(false);
+        }}
+      />
       <div className="container mx-auto pt-8">
         <Input
           type="text"
@@ -55,6 +120,7 @@ const ProductComplementaryTable = () => {
               <TableHead>Product Category</TableHead>
               <TableHead>Serial Number</TableHead>
               <TableHead>Mac Address</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -79,6 +145,15 @@ const ProductComplementaryTable = () => {
                   </TableCell>
                   <TableCell className="font-medium">
                     {item.macAddress}
+                  </TableCell>
+                  <TableCell>
+                    <Trash
+                      className="text-red-500 cursor-pointer"
+                      onClick={() => {
+                        setDeleteId(item.serialNumber);
+                        setOpen(true);
+                      }}
+                    />
                   </TableCell>
                 </TableRow>
               ))
