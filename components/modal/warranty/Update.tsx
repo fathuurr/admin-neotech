@@ -1,7 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -12,23 +10,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Popover } from "@/components/ui/popover";
 import { toast } from "@/components/ui/use-toast";
 import { updateWarranty } from "@/service/warranty";
 import { UpdateWarranty } from "@/types/warranty";
-import { PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { Pencil } from "lucide-react";
 
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
-import { cn, formattedDate } from "@/lib/utils";
+import { formattedDate } from "@/lib/utils";
 
 const ModalUpdateWarranty = ({ warrantyId }: any) => {
   const [data, setData] = useState<UpdateWarranty>({
     serialNumber: "",
     receiptDate: "",
   });
-  const [date, setDate] = useState<Date>();
 
   useEffect(() => {
     if (warrantyId) {
@@ -37,19 +31,32 @@ const ModalUpdateWarranty = ({ warrantyId }: any) => {
   }, [warrantyId]);
 
   const onSubmit = async () => {
-    const response = await updateWarranty(data, warrantyId._id);
+    const requestData = {
+      serialNumber: data.serialNumber,
+      receiptDate: data.receiptDate,
+    };
 
-    if (response.error) {
-      toast({
-        title: response.message,
-      });
-    } else {
-      toast({
-        title: "Successfully updated warranty",
-      });
-      window.location.reload();
-    }
+    // const response = await updateWarranty(requestData, warrantyId._id);
+
+    console.log(requestData);
+
+    // if (response.error) {
+    //   toast({
+    //     title: response.message,
+    //   });
+    // } else {
+    //   toast({
+    //     title: "Successfully updated warranty",
+    //   });
+    //   window.location.reload();
+    // }
   };
+
+  function formatInputDate(dateString: string) {
+    const date = new Date(dateString).toJSON()?.split("T")[0];
+
+    return date;
+  }
 
   return (
     <Dialog>
@@ -64,34 +71,34 @@ const ModalUpdateWarranty = ({ warrantyId }: any) => {
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "w-[280px] justify-start text-left font-normal",
-                  !date && "text-muted-foreground",
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? (
-                  format(date, "PPP")
-                ) : (
-                  <span> {formattedDate(data.receiptDate)} </span>
-                )}
-              </Button>
-            </PopoverTrigger>
+          <Input
+            type="text"
+            defaultValue={warrantyId.serialNumber}
+            onChange={(e) =>
+              setData((prevState) => ({
+                ...prevState,
+                serialNumber: e.target.value,
+              }))
+            }
+          />
 
-            <PopoverContent className="w-auto p-0">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
+          <Input
+            type="date"
+            className="w-1/2"
+            value={formatInputDate(warrantyId.receiptDate)}
+            onChange={(e) =>
+              setData((prevState) => ({
+                ...prevState,
+                receiptDate: e.target.value,
+              }))
+            }
+          />
         </div>
+        <DialogFooter>
+          <Button type="submit" onClick={onSubmit}>
+            Update
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
