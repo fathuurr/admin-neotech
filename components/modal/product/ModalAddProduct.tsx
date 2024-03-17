@@ -100,14 +100,15 @@ export function ModalAddProduct() {
           />
 
           <Select
-            className="basic-single rounded-lg"
+            className="my-react-select-container rounded-lg"
+            classNamePrefix={"my-react-select"}
             value={formattedCategories.find(
               (category) => category.value === addProduct.productCategory,
             )}
             onChange={(selectedOption: any) =>
               setAddProduct((prevState) => ({
                 ...prevState,
-                productCategory: selectedOption.value,
+                productCategory: selectedOption ? selectedOption.value : "",
               }))
             }
             options={formattedCategories}
