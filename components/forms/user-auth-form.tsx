@@ -34,7 +34,10 @@ export default function UserAuthForm() {
     } else {
       const response = await authLogin(data);
       if (response.error) {
-        alert(response.message);
+        toast({
+          title: response.message,
+          className: "bg-red-500",
+        });
       } else {
         toast({
           title: "Success",
