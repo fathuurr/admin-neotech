@@ -1,16 +1,35 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
-import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
+import { getProduct } from "@/service/product";
 
-async function getDataProduct() {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product`);
+export default function page() {
+  const router = useRouter();
 
-  return res.data.data;
-}
+  const [product, setProduct] = useState([]);
 
-export default async function page() {
-  const data = await getDataProduct();
+  const productList = useCallback(async () => {
+    const res = await getProduct();
+
+    setProduct(res);
+  }, []);
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+
+    if (!token) {
+      router.push("/");
+    }
+  }, [router]);
+
+  useEffect(() => {
+    productList();
+  }, []);
 
   return (
     <ScrollArea className="h-full">
@@ -40,7 +59,7 @@ export default async function page() {
               </svg>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold"> +{data.length} </div>
+              <div className="text-2xl font-bold"> +{product.length} </div>
               <p className="text-xs text-muted-foreground">Total Product</p>
             </CardContent>
           </Card>

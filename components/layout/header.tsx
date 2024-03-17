@@ -26,7 +26,10 @@ export default function Header() {
   const [namaLengkap, setNamaLengkap] = useState("");
 
   const onLogout = () => {
-    Cookies.remove("accessToken");
+    Cookies.remove("accessToken", {
+      path: "/",
+      domain: "localhost",
+    });
     router.push("/");
   };
 
