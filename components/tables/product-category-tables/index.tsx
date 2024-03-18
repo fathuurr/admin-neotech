@@ -5,12 +5,6 @@ import { CategoryProduct } from "@/types/product";
 import { useCallback, useEffect, useState } from "react";
 
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
   Table,
   TableBody,
   TableCell,
@@ -97,22 +91,18 @@ const ProductCategoryTable = () => {
                   <TableCell className="flex items-center">
                     <ModalUpdateCategory category={item} />
 
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Trash2
-                            className="cursor-pointer text-red-500"
-                            onClick={() => {
-                              setOpen(true);
-                              setDeleteId(item._id);
-                            }}
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Delete category</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <div className="has-tooltip">
+                      <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                        Delete
+                      </span>
+                      <Trash2
+                        className="cursor-pointer text-red-500"
+                        onClick={() => {
+                          setOpen(true);
+                          setDeleteId(item._id);
+                        }}
+                      />
+                    </div>
                   </TableCell>
                 </TableRow>
               ))

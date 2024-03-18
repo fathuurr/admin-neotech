@@ -116,3 +116,13 @@
     @apply text-neutral-600 dark:text-white;
   }
 }
+
+@layer components {
+  .tooltip {
+    @apply invisible absolute;
+  }
+
+  .has-tooltip:hover .tooltip {
+    @apply visible z-50;
+  }
+}

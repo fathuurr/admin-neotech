@@ -5,12 +5,6 @@ import { updateCategory } from "@/service/product";
 
 import { Button } from "@/components/ui/button";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -54,16 +48,12 @@ export function ModalUpdateCategory({ category }: any) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Pencil className="cursor-pointer mr-2 text-orange-500" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Update category</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <div className="has-tooltip">
+          <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+            Update
+          </span>
+          <Pencil className="cursor-pointer mr-2 text-orange-500" />
+        </div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

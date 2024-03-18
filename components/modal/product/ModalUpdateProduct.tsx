@@ -67,16 +67,12 @@ export function ModalUpdateProduct({ product }: any) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Pencil className="cursor-pointer mr-2 text-orange-500" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Update Product</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <div className="has-tooltip">
+          <Pencil className="cursor-pointer mr-2 text-orange-500" />
+          <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+            Update
+          </span>
+        </div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

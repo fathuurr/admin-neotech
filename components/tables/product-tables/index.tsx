@@ -4,12 +4,6 @@ import { Product } from "@/types/product";
 import { useCallback, useEffect, useState } from "react";
 
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
   Table,
   TableBody,
   TableCell,
@@ -39,6 +33,7 @@ const ProductTable = () => {
 
   useEffect(() => {
     getProductList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filteredProductList = productList.filter(
@@ -104,22 +99,19 @@ const ProductTable = () => {
                     <ModalDetailProduct product={item._id} />
                     <ModalUploadPhoto product={item} />
                     <ModalUpdateProduct product={item} />
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Trash2
-                            className="cursor-pointer text-red-500"
-                            onClick={() => {
-                              setOpen(true);
-                              setDeleteId(item._id);
-                            }}
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Delete product</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+
+                    <div className="has-tooltip">
+                      <Trash2
+                        className="cursor-pointer text-red-500"
+                        onClick={() => {
+                          setOpen(true);
+                          setDeleteId(item._id);
+                        }}
+                      />
+                      <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                        Delete
+                      </span>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))

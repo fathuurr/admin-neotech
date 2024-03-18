@@ -116,22 +116,19 @@ const WarrantyTable = () => {
                       </TableCell>
                       <TableCell className="flex items-center gap-3">
                         <ModalUpdateWarranty warrantyId={item} />
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <Trash
-                                onClick={() => {
-                                  setOpen(true);
-                                  setDeleteId(item._id);
-                                }}
-                                className="text-red-500 cursor-pointer"
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>Delete warranty</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+
+                        <div className="has-tooltip">
+                          <Trash
+                            onClick={() => {
+                              setOpen(true);
+                              setDeleteId(item._id);
+                            }}
+                            className="text-red-500 cursor-pointer"
+                          />
+                          <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                            Delete warranty
+                          </span>
+                        </div>
                       </TableCell>
                     </TableRow>
                   );

@@ -104,22 +104,19 @@ const UserTable = () => {
                 <TableCell>{user.role}</TableCell>
                 <TableCell className="flex items-center">
                   <ModalUpdateUser userId={user} />
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <Trash2
-                          onClick={() => {
-                            setOpen(true);
-                            setDeleteId(user._id);
-                          }}
-                          className="text-red-500 cursor-pointer"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Delete User</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+
+                  <div className="has-tooltip">
+                    <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                      Delete User
+                    </span>
+                    <Trash2
+                      onClick={() => {
+                        setOpen(true);
+                        setDeleteId(user._id);
+                      }}
+                      className="text-red-500 cursor-pointer"
+                    />
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
