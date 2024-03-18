@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import BreadCrumb from "@/components/breadcrumb";
@@ -6,15 +7,24 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import Cookies from "js-cookie";
 
 const breadcrumbItems = [{ title: "User", link: "/dashboard/user" }];
 export default function page() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const router = useRouter();
 
   const nextPage = () => {
     router.push("/dashboard/user/add-user");
   };
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+
+    if (!token) {
+      router.push("/");
+    }
+  }, [router]);
 
   return (
     <>

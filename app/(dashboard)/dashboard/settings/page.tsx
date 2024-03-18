@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+"use client";
 import BreadCrumb from "@/components/breadcrumb";
 import UpdateForm from "@/components/forms/update-auth-form";
 import UpdatePassword from "@/components/forms/update-password";
-import { Overview } from "@/components/overview";
-import { RecentSales } from "@/components/recent-sales";
 import {
   Card,
   CardContent,
@@ -13,8 +13,22 @@ import {
 import { Heading } from "@/components/ui/heading";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 const breadcrumbItems = [{ title: "Settings", link: "/dashboard/settings" }];
 export default function page() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+
+    if (!token) {
+      router.push("/");
+    }
+  }, [router]);
+
   return (
     <ScrollArea className="h-full">
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">

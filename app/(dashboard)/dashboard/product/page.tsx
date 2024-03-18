@@ -1,17 +1,29 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import BreadCrumb from "@/components/breadcrumb";
 import { ModalAddProduct } from "@/components/modal/product/ModalAddProduct";
 import ProductTable from "@/components/tables/product-tables";
 import ProductIsDeleted from "@/components/tables/product-tables/productIsDeleted";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 const breadcrumbItems = [{ title: "Product", link: "/dashboard/product" }];
 const page = () => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const searchParams = useSearchParams();
+  const router = useRouter();
   const myParam = searchParams.get("isDeleted");
 
   const isParamPresent = myParam !== null;
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+
+    if (!token) {
+      router.push("/");
+    }
+  }, [router]);
 
   return (
     <>

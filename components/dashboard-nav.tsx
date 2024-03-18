@@ -36,7 +36,7 @@ export function DashboardNav({ items, setOpen }: DashboardNavProps) {
   }, []);
 
   const onLogout = () => {
-    Cookies.remove("accessToken", {
+    Cookies.remove("token", {
       path: "/",
       domain: "localhost",
     });
