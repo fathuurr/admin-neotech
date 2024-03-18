@@ -5,12 +5,7 @@ import { updateUserBySuperAdmin } from "@/service/user";
 import { User } from "@/types/user";
 
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
 import {
   Dialog,
   DialogContent,

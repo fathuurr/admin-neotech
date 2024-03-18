@@ -3,12 +3,6 @@ import { deleteUser, getUser } from "@/service/user";
 import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
   Table,
   TableBody,
   TableCell,

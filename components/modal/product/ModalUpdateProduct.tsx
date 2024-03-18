@@ -4,12 +4,7 @@ import { useEffect, useState } from "react";
 import { updateProduct } from "@/service/product";
 
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
 import {
   Dialog,
   DialogContent,
