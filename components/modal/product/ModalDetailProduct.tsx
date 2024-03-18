@@ -70,7 +70,7 @@ const ModalDetailProduct = ({ product }: any) => {
           </span>
         </div>
       </DialogTrigger>
-      <DialogContent className="min-w-[50%]">
+      <DialogContent className="min-w-[50%] overflow-y-scroll max-h-[700px]">
         <DialogHeader>
           <DialogTitle>{productDetail?.productName}</DialogTitle>
           <DialogDescription>
