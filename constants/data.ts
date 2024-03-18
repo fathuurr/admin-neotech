@@ -149,4 +149,16 @@ export const navItems: NavItem[] = [
     icon: "user",
     label: "user",
   },
+  {
+    title: "Settings",
+    href: "/dashboard/settings",
+    icon: "settings",
+    label: "settings",
+  },
+  // {
+  //   title: "Logout",
+  //   href: "/",
+  //   icon: "chevronLeft",
+  //   label: "settings",
+  // },
 ];

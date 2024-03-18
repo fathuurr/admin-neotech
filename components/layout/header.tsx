@@ -6,16 +6,6 @@ import { cn } from "@/lib/utils";
 import { MobileSidebar } from "./mobile-sidebar";
 import Link from "next/link";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { User } from "lucide-react";
-
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
@@ -77,27 +67,7 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <User />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel> {namaLengkap} </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={pageSettings}
-              >
-                Settings
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer" onClick={onLogout}>
-                Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <span className="text-sm"> {namaLengkap} </span>
           <ThemeToggle />
         </div>
       </nav>
