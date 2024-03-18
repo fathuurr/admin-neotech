@@ -1,6 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -61,7 +67,16 @@ const ModalUpdateWarranty = ({ warrantyId }: any) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Pencil className="cursor-pointer text-orange-500" />
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Pencil className="cursor-pointer text-orange-500" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Update warranty</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </DialogTrigger>
 
       <DialogContent>

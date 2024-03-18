@@ -4,9 +4,14 @@ import { Product } from "@/types/product";
 import { useCallback, useEffect, useState } from "react";
 
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -99,13 +104,22 @@ const ProductTable = () => {
                     <ModalDetailProduct product={item._id} />
                     <ModalUploadPhoto product={item} />
                     <ModalUpdateProduct product={item} />
-                    <Trash2
-                      className="cursor-pointer text-red-500"
-                      onClick={() => {
-                        setOpen(true);
-                        setDeleteId(item._id);
-                      }}
-                    />
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Trash2
+                            className="cursor-pointer text-red-500"
+                            onClick={() => {
+                              setOpen(true);
+                              setDeleteId(item._id);
+                            }}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Delete product</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </TableCell>
                 </TableRow>
               ))

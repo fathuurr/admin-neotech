@@ -1,5 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -62,7 +68,16 @@ const ModalDetailProduct = ({ product }: any) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <ScrollText className="cursor-pointer mr-2 text-emerald-500" />
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <ScrollText className="cursor-pointer mr-2 text-emerald-500" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Detail Product</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </DialogTrigger>
       <DialogContent className="min-w-[50%]">
         <DialogHeader>

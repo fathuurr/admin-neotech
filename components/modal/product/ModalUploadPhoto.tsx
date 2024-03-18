@@ -1,6 +1,12 @@
 "use client";
 
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -76,7 +82,16 @@ const ModalUploadPhoto = ({ product }: any) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <FileUp className="cursor-pointer mr-2" />
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <FileUp className="cursor-pointer mr-2" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Upload photo</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

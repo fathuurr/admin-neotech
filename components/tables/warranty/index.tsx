@@ -5,6 +5,12 @@ import ModalUpdateWarranty from "@/components/modal/warranty/Update";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Table,
   TableBody,
   TableCell,
@@ -16,7 +22,7 @@ import { toast } from "@/components/ui/use-toast";
 import { formattedDate } from "@/lib/utils";
 import { deleteWarranty, getWarranty } from "@/service/warranty";
 import { Warranty } from "@/types/warranty";
-import { Pencil, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 
@@ -110,13 +116,22 @@ const WarrantyTable = () => {
                       </TableCell>
                       <TableCell className="flex items-center gap-3">
                         <ModalUpdateWarranty warrantyId={item} />
-                        <Trash
-                          onClick={() => {
-                            setOpen(true);
-                            setDeleteId(item._id);
-                          }}
-                          className="text-red-500 cursor-pointer"
-                        />
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <Trash
+                                onClick={() => {
+                                  setOpen(true);
+                                  setDeleteId(item._id);
+                                }}
+                                className="text-red-500 cursor-pointer"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Delete warranty</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </TableCell>
                     </TableRow>
                   );

@@ -3,6 +3,12 @@ import { deleteUser, getUser } from "@/service/user";
 import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Table,
   TableBody,
   TableCell,
@@ -98,13 +104,22 @@ const UserTable = () => {
                 <TableCell>{user.role}</TableCell>
                 <TableCell className="flex items-center">
                   <ModalUpdateUser userId={user} />
-                  <Trash2
-                    onClick={() => {
-                      setOpen(true);
-                      setDeleteId(user._id);
-                    }}
-                    className="text-red-500 cursor-pointer"
-                  />
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Trash2
+                          onClick={() => {
+                            setOpen(true);
+                            setDeleteId(user._id);
+                          }}
+                          className="text-red-500 cursor-pointer"
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Delete User</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </TableCell>
               </TableRow>
             ))}

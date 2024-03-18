@@ -4,6 +4,12 @@ import { deleteSerialNumber, getDataComplementary } from "@/service/product";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Table,
   TableBody,
   TableCell,
@@ -147,13 +153,22 @@ const ProductComplementaryTable = () => {
                     {item.macAddress}
                   </TableCell>
                   <TableCell>
-                    <Trash
-                      className="text-red-500 cursor-pointer"
-                      onClick={() => {
-                        setDeleteId(item.serialNumber);
-                        setOpen(true);
-                      }}
-                    />
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Trash
+                            className="text-red-500 cursor-pointer"
+                            onClick={() => {
+                              setDeleteId(item.serialNumber);
+                              setOpen(true);
+                            }}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Delete product complementary</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </TableCell>
                 </TableRow>
               ))

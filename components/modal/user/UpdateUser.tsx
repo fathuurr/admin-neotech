@@ -6,6 +6,12 @@ import { User } from "@/types/user";
 
 import { Button } from "@/components/ui/button";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -83,7 +89,16 @@ export function ModalUpdateUser({ userId }: any) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Pencil className="cursor-pointer mr-2 text-orange-500" />
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Pencil className="cursor-pointer mr-2 text-orange-500" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Update user</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
