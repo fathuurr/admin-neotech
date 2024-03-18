@@ -56,6 +56,12 @@ export async function getProduct() {
 
   return axiosResponse.data;
 }
+export async function getProductIsDeleted() {
+  const response = await axios.get(`${URL}/product?isDeleted=true`);
+  const axiosResponse = response.data;
+
+  return axiosResponse.data;
+}
 
 export async function getProductById(id: string) {
   const response = await axios.get(`${URL}/product?id=${id}`);
@@ -82,6 +88,16 @@ export async function updateProduct(data: PostDataProduct, id: string) {
     url,
     method: "PUT",
     data,
+    token: true,
+  });
+}
+
+export async function restoreData(id: string) {
+  const url = `${URL}/product/${id}/restore`;
+
+  return callAPI({
+    url,
+    method: "PUT",
     token: true,
   });
 }
