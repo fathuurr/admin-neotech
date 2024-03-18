@@ -17,6 +17,7 @@ import { Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/modal/alert-modal";
 import { toast } from "@/components/ui/use-toast";
 import { ModalUpdateCategory } from "@/components/modal/product-category/ModalUpdateCategory";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ProductCategoryTable = () => {
   const [categoryList, setCategoryList] = useState([]);
@@ -69,46 +70,48 @@ const ProductCategoryTable = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        <Table className="mt-5">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Category Name</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {showNoDataMessage ? (
+        <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell>No Data</TableCell>
+                <TableHead>Category Name</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
-            ) : (
-              filteredProductList.map((item: any) => (
-                <TableRow key={item._id}>
-                  <TableCell className="font-medium">
-                    {item.categoryName}
-                  </TableCell>
-
-                  <TableCell className="flex items-center">
-                    <ModalUpdateCategory category={item} />
-
-                    <div className="has-tooltip">
-                      <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
-                        Delete
-                      </span>
-                      <Trash2
-                        className="cursor-pointer text-red-500"
-                        onClick={() => {
-                          setOpen(true);
-                          setDeleteId(item._id);
-                        }}
-                      />
-                    </div>
-                  </TableCell>
+            </TableHeader>
+            <TableBody>
+              {showNoDataMessage ? (
+                <TableRow>
+                  <TableCell>No Data</TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+              ) : (
+                filteredProductList.map((item: any) => (
+                  <TableRow key={item._id}>
+                    <TableCell className="font-medium">
+                      {item.categoryName}
+                    </TableCell>
+
+                    <TableCell className="flex items-center">
+                      <ModalUpdateCategory category={item} />
+
+                      <div className="has-tooltip">
+                        <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                          Delete
+                        </span>
+                        <Trash2
+                          className="cursor-pointer text-red-500"
+                          onClick={() => {
+                            setOpen(true);
+                            setDeleteId(item._id);
+                          }}
+                        />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </ScrollArea>
       </div>
     </>
   );

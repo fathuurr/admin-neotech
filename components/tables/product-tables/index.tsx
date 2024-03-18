@@ -18,6 +18,7 @@ import { Trash2 } from "lucide-react";
 import ModalDetailProduct from "@/components/modal/product/ModalDetailProduct";
 import { AlertModal } from "@/components/modal/alert-modal";
 import { useToast } from "@/components/ui/use-toast";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ProductTable = () => {
   const { toast } = useToast();
@@ -73,51 +74,53 @@ const ProductTable = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <Table className="mt-5">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Product Number</TableHead>
-              <TableHead>Product Name</TableHead>
-              <TableHead>Product Category</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {showNoDataMessage ? (
+        <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell>No Data</TableCell>
+                <TableHead>Product Number</TableHead>
+                <TableHead>Product Name</TableHead>
+                <TableHead>Product Category</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
-            ) : (
-              filteredProductList.map((item: Product) => (
-                <TableRow key={item._id}>
-                  <TableCell className="font-medium">
-                    {item.productNumber}
-                  </TableCell>
-                  <TableCell>{item.productName}</TableCell>
-                  <TableCell>{item.productCategory.categoryName}</TableCell>
-                  <TableCell className="flex items-center">
-                    <ModalDetailProduct product={item._id} />
-                    <ModalUploadPhoto product={item} />
-                    <ModalUpdateProduct product={item} />
-
-                    <div className="has-tooltip">
-                      <Trash2
-                        className="cursor-pointer text-red-500"
-                        onClick={() => {
-                          setOpen(true);
-                          setDeleteId(item._id);
-                        }}
-                      />
-                      <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
-                        Delete
-                      </span>
-                    </div>
-                  </TableCell>
+            </TableHeader>
+            <TableBody>
+              {showNoDataMessage ? (
+                <TableRow>
+                  <TableCell>No Data</TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+              ) : (
+                filteredProductList.map((item: Product) => (
+                  <TableRow key={item._id}>
+                    <TableCell className="font-medium">
+                      {item.productNumber}
+                    </TableCell>
+                    <TableCell>{item.productName}</TableCell>
+                    <TableCell>{item.productCategory.categoryName}</TableCell>
+                    <TableCell className="flex items-center">
+                      <ModalDetailProduct product={item._id} />
+                      <ModalUploadPhoto product={item} />
+                      <ModalUpdateProduct product={item} />
+
+                      <div className="has-tooltip">
+                        <Trash2
+                          className="cursor-pointer text-red-500"
+                          onClick={() => {
+                            setOpen(true);
+                            setDeleteId(item._id);
+                          }}
+                        />
+                        <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                          Delete
+                        </span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </ScrollArea>
       </div>
     </>
   );

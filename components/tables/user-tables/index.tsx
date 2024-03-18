@@ -15,6 +15,7 @@ import { Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/modal/alert-modal";
 import { toast } from "@/components/ui/use-toast";
 import { ModalUpdateUser } from "@/components/modal/user/UpdateUser";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface UserTypes {
   _id: string;
@@ -77,45 +78,47 @@ const UserTable = () => {
           onChange={handleSearch}
           placeholder="Search..."
         />
-        <Table className="mt-6">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nama Lengkap</TableHead>
-              <TableHead>No Telepon</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Username</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredUsers.map((user: UserTypes) => (
-              <TableRow key={user._id}>
-                <TableCell>{user.namaLengkap}</TableCell>
-                <TableCell>{user.noTelp}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.username}</TableCell>
-                <TableCell>{user.role}</TableCell>
-                <TableCell className="flex items-center">
-                  <ModalUpdateUser userId={user} />
-
-                  <div className="has-tooltip">
-                    <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
-                      Delete User
-                    </span>
-                    <Trash2
-                      onClick={() => {
-                        setOpen(true);
-                        setDeleteId(user._id);
-                      }}
-                      className="text-red-500 cursor-pointer"
-                    />
-                  </div>
-                </TableCell>
+        <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nama Lengkap</TableHead>
+                <TableHead>No Telepon</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Username</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {filteredUsers.map((user: UserTypes) => (
+                <TableRow key={user._id}>
+                  <TableCell>{user.namaLengkap}</TableCell>
+                  <TableCell>{user.noTelp}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell>{user.role}</TableCell>
+                  <TableCell className="flex items-center">
+                    <ModalUpdateUser userId={user} />
+
+                    <div className="has-tooltip">
+                      <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                        Delete User
+                      </span>
+                      <Trash2
+                        onClick={() => {
+                          setOpen(true);
+                          setDeleteId(user._id);
+                        }}
+                        className="text-red-500 cursor-pointer"
+                      />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </ScrollArea>
       </div>
     </>
   );

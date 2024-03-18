@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Trash } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { AlertModal } from "@/components/modal/alert-modal";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ComplementaryData {
   _id: string;
@@ -112,59 +113,61 @@ const ProductComplementaryTable = () => {
           onChange={handleInputSearch}
         />
 
-        <Table className="mt-5">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Product Number</TableHead>
-              <TableHead>Product Name</TableHead>
-              <TableHead>Product Category</TableHead>
-              <TableHead>Serial Number</TableHead>
-              <TableHead>Mac Address</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {showNoDataMessage ? (
+        <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell>No Data</TableCell>
+                <TableHead>Product Number</TableHead>
+                <TableHead>Product Name</TableHead>
+                <TableHead>Product Category</TableHead>
+                <TableHead>Serial Number</TableHead>
+                <TableHead>Mac Address</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
-            ) : (
-              filteredData.map((item: any) => (
-                <TableRow key={item._id}>
-                  <TableCell className="font-medium">
-                    {item.product.productNumber}
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {item.product.productName}
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {item.product.productCategory.categoryName}
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {item.serialNumber}
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {item.macAddress}
-                  </TableCell>
-                  <TableCell>
-                    <div className="has-tooltip">
-                      <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
-                        Delete
-                      </span>
-                      <Trash
-                        className="text-red-500 cursor-pointer"
-                        onClick={() => {
-                          setDeleteId(item.serialNumber);
-                          setOpen(true);
-                        }}
-                      />
-                    </div>
-                  </TableCell>
+            </TableHeader>
+            <TableBody>
+              {showNoDataMessage ? (
+                <TableRow>
+                  <TableCell>No Data</TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+              ) : (
+                filteredData.map((item: any) => (
+                  <TableRow key={item._id}>
+                    <TableCell className="font-medium">
+                      {item.product.productNumber}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {item.product.productName}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {item.product.productCategory.categoryName}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {item.serialNumber}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {item.macAddress}
+                    </TableCell>
+                    <TableCell>
+                      <div className="has-tooltip">
+                        <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                          Delete
+                        </span>
+                        <Trash
+                          className="text-red-500 cursor-pointer"
+                          onClick={() => {
+                            setDeleteId(item.serialNumber);
+                            setOpen(true);
+                          }}
+                        />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </ScrollArea>
       </div>
     </>
   );

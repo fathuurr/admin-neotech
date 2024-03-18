@@ -72,8 +72,8 @@ const WarrantyTable = () => {
           type="text"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <ScrollArea className="h-[500px]">
-          <Table className="mt-6">
+        <ScrollArea className="rounded-md border h-[calc(90vh-220px)] mt-7">
+          <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Serial Number</TableHead>
