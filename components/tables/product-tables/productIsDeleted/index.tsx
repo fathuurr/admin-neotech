@@ -72,7 +72,7 @@ const ProductIsDeleted: React.FC = () => {
 
         <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
           <Table>
-            <TableHeader>
+            <TableHeader className="sticky top-0 bg-secondary">
               <TableRow>
                 <TableHead>Product Number</TableHead>
                 <TableHead>Product Name</TableHead>

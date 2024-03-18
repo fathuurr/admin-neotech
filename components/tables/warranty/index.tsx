@@ -74,7 +74,7 @@ const WarrantyTable = () => {
         />
         <ScrollArea className="rounded-md border h-[calc(90vh-220px)] mt-7">
           <Table>
-            <TableHeader>
+            <TableHeader className="sticky top-0 bg-secondary">
               <TableRow>
                 <TableHead>Serial Number</TableHead>
                 <TableHead>Product Name</TableHead>
