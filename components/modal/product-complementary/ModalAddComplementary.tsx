@@ -114,7 +114,8 @@ export function ModalAddComplementary() {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <Select
-            className="basic-single rounded-lg"
+            className="my-react-select-container rounded-lg"
+            classNamePrefix={"my-react-select"}
             value={formattedProductList.find(
               (product) => product.value === addComplementary?.productID,
             )}
@@ -124,7 +125,6 @@ export function ModalAddComplementary() {
                 productID: selectedOption ? selectedOption.value : null,
               }))
             }
-            classNamePrefix={"select"}
             options={formattedProductList}
             isSearchable={true}
             isClearable={true}
