@@ -152,7 +152,7 @@ export function ModalAddComplementary() {
 
               {inputFields.length > 1 && (
                 <Trash2
-                  className="cursor-pointer ml-2"
+                  className="cursor-pointer ml-2 text-red-500"
                   onClick={() => handleRemoveFields(index)}
                 />
               )}
