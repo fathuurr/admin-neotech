@@ -15,18 +15,6 @@ export default function Header() {
   const router = useRouter();
   const [namaLengkap, setNamaLengkap] = useState("");
 
-  const onLogout = () => {
-    Cookies.remove("accessToken", {
-      path: "/",
-      domain: "localhost",
-    });
-    router.push("/");
-  };
-
-  const pageSettings = () => {
-    router.push("/dashboard/settings");
-  };
-
   useEffect(() => {
     const token = Cookies.get("token");
 

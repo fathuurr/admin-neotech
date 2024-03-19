@@ -36,10 +36,7 @@ export function DashboardNav({ items, setOpen }: DashboardNavProps) {
   }, []);
 
   const onLogout = () => {
-    Cookies.remove("token", {
-      path: "/",
-      domain: "localhost",
-    });
+    Cookies.remove("token");
     router.push("/");
   };
 
