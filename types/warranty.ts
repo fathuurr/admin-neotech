@@ -1,4 +1,4 @@
-import { CategoryProduct } from "./product";
+import { CategoryProduct } from './product';
 
 export interface Warranty {
   _id: string;
