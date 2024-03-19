@@ -16,7 +16,7 @@ import { toast } from "@/components/ui/use-toast";
 import { formattedDate } from "@/lib/utils";
 import { deleteWarranty, getWarranty } from "@/service/warranty";
 import { Warranty } from "@/types/warranty";
-import { Trash } from "lucide-react";
+import { Loader2, Trash } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 
@@ -25,11 +25,14 @@ const WarrantyTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [deleteId, setDeleteId] = useState("");
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getWarrantyList = useCallback(async () => {
+    setIsLoading(true);
     const data = await getWarranty();
 
     setWarrantyList(data);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -72,65 +75,78 @@ const WarrantyTable = () => {
           type="text"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <ScrollArea className="rounded-md border h-[calc(90vh-220px)] mt-7">
-          <Table>
-            <TableHeader className="sticky top-0 bg-secondary">
-              <TableRow>
-                <TableHead>Serial Number</TableHead>
-                <TableHead>Product Name</TableHead>
-                <TableHead>Warranty</TableHead>
-                <TableHead>Warranty End</TableHead>
-                <TableHead>Receipt Date</TableHead>
-                <TableHead>Receipt</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {showNoDataMessage ? (
-                <TableRow>
-                  <TableCell>No Data</TableCell>
-                </TableRow>
-              ) : (
-                filteredWarrantyList.map((item: Warranty) => {
-                  return (
-                    <TableRow key={item._id}>
-                      <TableCell> {item.serialNumber} </TableCell>
-                      <TableCell> {item.product.productName} </TableCell>
-                      <TableCell> {item.warranty} </TableCell>
-                      <TableCell> {formattedDate(item.warrantyEnd)} </TableCell>
-                      <TableCell> {formattedDate(item.receiptDate)} </TableCell>
-                      <TableCell>
-                        <Image
-                          src={`${process.env.NEXT_PUBLIC_API_URL}/${item.receipt}`}
-                          alt="image receipt"
-                          width={200}
-                          height={200}
-                          className="rounded-md"
-                        />
-                      </TableCell>
-                      <TableCell className="flex items-center gap-3">
-                        <ModalUpdateWarranty warrantyId={item} />
 
-                        <div className="has-tooltip">
-                          <Trash
-                            onClick={() => {
-                              setOpen(true);
-                              setDeleteId(item._id);
-                            }}
-                            className="text-red-500 cursor-pointer"
+        {isLoading ? (
+          <div className="flex items-center justify-center mt-10">
+            <Loader2 className="animate-spin" size={50} />
+          </div>
+        ) : (
+          <ScrollArea className="rounded-md border h-[calc(90vh-220px)] mt-7">
+            <Table>
+              <TableHeader className="sticky top-0 bg-secondary">
+                <TableRow>
+                  <TableHead>Serial Number</TableHead>
+                  <TableHead>Product Name</TableHead>
+                  <TableHead>Warranty</TableHead>
+                  <TableHead>Warranty End</TableHead>
+                  <TableHead>Receipt Date</TableHead>
+                  <TableHead>Receipt</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {showNoDataMessage ? (
+                  <TableRow>
+                    <TableCell>No Data</TableCell>
+                  </TableRow>
+                ) : (
+                  filteredWarrantyList.map((item: Warranty) => {
+                    return (
+                      <TableRow key={item._id}>
+                        <TableCell> {item.serialNumber} </TableCell>
+                        <TableCell> {item.product.productName} </TableCell>
+                        <TableCell> {item.warranty} </TableCell>
+                        <TableCell>
+                          {" "}
+                          {formattedDate(item.warrantyEnd)}{" "}
+                        </TableCell>
+                        <TableCell>
+                          {" "}
+                          {formattedDate(item.receiptDate)}{" "}
+                        </TableCell>
+                        <TableCell>
+                          <Image
+                            src={`${process.env.NEXT_PUBLIC_API_URL}/${item.receipt}`}
+                            alt="image receipt"
+                            width={200}
+                            height={200}
+                            className="rounded-md"
                           />
-                          <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
-                            Delete warranty
-                          </span>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              )}
-            </TableBody>
-          </Table>
-        </ScrollArea>
+                        </TableCell>
+                        <TableCell className="flex items-center gap-3">
+                          <ModalUpdateWarranty warrantyId={item} />
+
+                          <div className="has-tooltip">
+                            <Trash
+                              onClick={() => {
+                                setOpen(true);
+                                setDeleteId(item._id);
+                              }}
+                              className="text-red-500 cursor-pointer"
+                            />
+                            <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                              Delete warranty
+                            </span>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                )}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        )}
       </div>
     </>
   );

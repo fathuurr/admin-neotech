@@ -14,6 +14,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { getProductIsDeleted, restoreData } from "@/service/product";
 import { Product } from "@/types/product";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const ProductIsDeleted: React.FC = () => {
@@ -21,11 +22,14 @@ const ProductIsDeleted: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [restoreId, setRestoreId] = useState("");
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     const res = await getProductIsDeleted();
 
     setData(res);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -70,46 +74,52 @@ const ProductIsDeleted: React.FC = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
-          <Table>
-            <TableHeader className="sticky top-0 bg-secondary">
-              <TableRow>
-                <TableHead>Product Number</TableHead>
-                <TableHead>Product Name</TableHead>
-                <TableHead>Product Category</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {showNoDataMessage ? (
+        {isLoading ? (
+          <div className="flex items-center justify-center mt-10">
+            <Loader2 className="animate-spin" size={50} />
+          </div>
+        ) : (
+          <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
+            <Table>
+              <TableHeader className="sticky top-0 bg-secondary">
                 <TableRow>
-                  <TableCell>No Data</TableCell>
+                  <TableHead>Product Number</TableHead>
+                  <TableHead>Product Name</TableHead>
+                  <TableHead>Product Category</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
-              ) : (
-                filteredProductList.map((item: Product) => (
-                  <TableRow key={item._id}>
-                    <TableCell className="font-medium">
-                      {item.productNumber}
-                    </TableCell>
-                    <TableCell>{item.productName}</TableCell>
-                    <TableCell>{item.productCategory.categoryName}</TableCell>
-                    <TableCell className="flex items-center">
-                      <Button
-                        onClick={() => {
-                          setOpen(true);
-                          setRestoreId(item._id);
-                        }}
-                        className="bg-orange-500"
-                      >
-                        Restore
-                      </Button>
-                    </TableCell>
+              </TableHeader>
+              <TableBody>
+                {showNoDataMessage ? (
+                  <TableRow>
+                    <TableCell>No Data</TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </ScrollArea>
+                ) : (
+                  filteredProductList.map((item: Product) => (
+                    <TableRow key={item._id}>
+                      <TableCell className="font-medium">
+                        {item.productNumber}
+                      </TableCell>
+                      <TableCell>{item.productName}</TableCell>
+                      <TableCell>{item.productCategory.categoryName}</TableCell>
+                      <TableCell className="flex items-center">
+                        <Button
+                          onClick={() => {
+                            setOpen(true);
+                            setRestoreId(item._id);
+                          }}
+                          className="bg-orange-500"
+                        >
+                          Restore
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        )}
       </div>
     </>
   );

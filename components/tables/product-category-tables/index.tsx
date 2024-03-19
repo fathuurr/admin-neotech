@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { Trash2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/modal/alert-modal";
 import { toast } from "@/components/ui/use-toast";
 import { ModalUpdateCategory } from "@/components/modal/product-category/ModalUpdateCategory";
@@ -24,11 +24,14 @@ const ProductCategoryTable = () => {
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const getCategoryList = useCallback(async () => {
+    setIsLoading(true);
     const data = await getCategoryProduct();
 
     setCategoryList(data);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -69,49 +72,54 @@ const ProductCategoryTable = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-
-        <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
-          <Table>
-            <TableHeader className="sticky top-0 bg-secondary">
-              <TableRow>
-                <TableHead>Category Name</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {showNoDataMessage ? (
+        {isLoading ? (
+          <div className="flex items-center justify-center mt-10">
+            <Loader2 className="animate-spin" size={50} />
+          </div>
+        ) : (
+          <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
+            <Table>
+              <TableHeader className="sticky top-0 bg-secondary">
                 <TableRow>
-                  <TableCell>No Data</TableCell>
+                  <TableHead>Category Name</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
-              ) : (
-                filteredProductList.map((item: any) => (
-                  <TableRow key={item._id}>
-                    <TableCell className="font-medium">
-                      {item.categoryName}
-                    </TableCell>
-
-                    <TableCell className="flex items-center">
-                      <ModalUpdateCategory category={item} />
-
-                      <div className="has-tooltip">
-                        <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
-                          Delete
-                        </span>
-                        <Trash2
-                          className="cursor-pointer text-red-500"
-                          onClick={() => {
-                            setOpen(true);
-                            setDeleteId(item._id);
-                          }}
-                        />
-                      </div>
-                    </TableCell>
+              </TableHeader>
+              <TableBody>
+                {showNoDataMessage ? (
+                  <TableRow>
+                    <TableCell>No Data</TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </ScrollArea>
+                ) : (
+                  filteredProductList.map((item: any) => (
+                    <TableRow key={item._id}>
+                      <TableCell className="font-medium">
+                        {item.categoryName}
+                      </TableCell>
+
+                      <TableCell className="flex items-center">
+                        <ModalUpdateCategory category={item} />
+
+                        <div className="has-tooltip">
+                          <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                            Delete
+                          </span>
+                          <Trash2
+                            className="cursor-pointer text-red-500"
+                            onClick={() => {
+                              setOpen(true);
+                              setDeleteId(item._id);
+                            }}
+                          />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        )}
       </div>
     </>
   );

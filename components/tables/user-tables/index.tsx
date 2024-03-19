@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { Trash2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/modal/alert-modal";
 import { toast } from "@/components/ui/use-toast";
 import { ModalUpdateUser } from "@/components/modal/user/UpdateUser";
@@ -31,10 +31,13 @@ const UserTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchDataUser = useCallback(async () => {
+    setIsLoading(true);
     const res = await getUser();
     setUsers(res.data.data);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -78,47 +81,54 @@ const UserTable = () => {
           onChange={handleSearch}
           placeholder="Search..."
         />
-        <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
-          <Table>
-            <TableHeader className="sticky top-0 bg-secondary">
-              <TableRow>
-                <TableHead>Nama Lengkap</TableHead>
-                <TableHead>No Telepon</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Username</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredUsers.map((user: UserTypes) => (
-                <TableRow key={user._id}>
-                  <TableCell>{user.namaLengkap}</TableCell>
-                  <TableCell>{user.noTelp}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.username}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                  <TableCell className="flex items-center">
-                    <ModalUpdateUser userId={user} />
 
-                    <div className="has-tooltip">
-                      <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
-                        Delete User
-                      </span>
-                      <Trash2
-                        onClick={() => {
-                          setOpen(true);
-                          setDeleteId(user._id);
-                        }}
-                        className="text-red-500 cursor-pointer"
-                      />
-                    </div>
-                  </TableCell>
+        {isLoading ? (
+          <div className="flex items-center justify-center mt-10">
+            <Loader2 className="animate-spin" size={50} />
+          </div>
+        ) : (
+          <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
+            <Table>
+              <TableHeader className="sticky top-0 bg-secondary">
+                <TableRow>
+                  <TableHead>Nama Lengkap</TableHead>
+                  <TableHead>No Telepon</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Username</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </ScrollArea>
+              </TableHeader>
+              <TableBody>
+                {filteredUsers.map((user: UserTypes) => (
+                  <TableRow key={user._id}>
+                    <TableCell>{user.namaLengkap}</TableCell>
+                    <TableCell>{user.noTelp}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.username}</TableCell>
+                    <TableCell>{user.role}</TableCell>
+                    <TableCell className="flex items-center">
+                      <ModalUpdateUser userId={user} />
+
+                      <div className="has-tooltip">
+                        <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                          Delete User
+                        </span>
+                        <Trash2
+                          onClick={() => {
+                            setOpen(true);
+                            setDeleteId(user._id);
+                          }}
+                          className="text-red-500 cursor-pointer"
+                        />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        )}
       </div>
     </>
   );

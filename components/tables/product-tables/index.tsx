@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import ModalUploadPhoto from "@/components/modal/product/ModalUploadPhoto";
 import { ModalUpdateProduct } from "@/components/modal/product/ModalUpdateProduct";
-import { Trash2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import ModalDetailProduct from "@/components/modal/product/ModalDetailProduct";
 import { AlertModal } from "@/components/modal/alert-modal";
 import { useToast } from "@/components/ui/use-toast";
@@ -26,10 +26,13 @@ const ProductTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const getProductList = useCallback(async () => {
+    setIsLoading(true);
     const data = await getProduct();
     setProductList(data);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -37,10 +40,8 @@ const ProductTable = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const filteredProductList = productList.filter(
-    (item: Product) =>
-      item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.productNumber.toLowerCase().includes(searchTerm.toLowerCase()),
+  const filteredProductList = productList.filter((item: Product) =>
+    new RegExp(searchTerm, "i").test(item.productName + item.productNumber),
   );
 
   const showNoDataMessage =
@@ -74,53 +75,60 @@ const ProductTable = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
-          <Table>
-            <TableHeader className="sticky top-0 bg-secondary">
-              <TableRow>
-                <TableHead>Product Number</TableHead>
-                <TableHead>Product Name</TableHead>
-                <TableHead>Product Category</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {showNoDataMessage ? (
-                <TableRow>
-                  <TableCell>No Data</TableCell>
-                </TableRow>
-              ) : (
-                filteredProductList.map((item: Product) => (
-                  <TableRow key={item._id}>
-                    <TableCell className="font-medium">
-                      {item.productNumber}
-                    </TableCell>
-                    <TableCell>{item.productName}</TableCell>
-                    <TableCell>{item.productCategory.categoryName}</TableCell>
-                    <TableCell className="flex items-center">
-                      <ModalDetailProduct product={item._id} />
-                      <ModalUploadPhoto product={item} />
-                      <ModalUpdateProduct product={item} />
 
-                      <div className="has-tooltip">
-                        <Trash2
-                          className="cursor-pointer text-red-500"
-                          onClick={() => {
-                            setOpen(true);
-                            setDeleteId(item._id);
-                          }}
-                        />
-                        <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
-                          Delete
-                        </span>
-                      </div>
-                    </TableCell>
+        {isLoading ? (
+          <div className="flex items-center justify-center mt-10">
+            <Loader2 className="animate-spin" size={50} />
+          </div>
+        ) : (
+          <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
+            <Table>
+              <TableHeader className="sticky top-0 bg-secondary">
+                <TableRow>
+                  <TableHead>Product Number</TableHead>
+                  <TableHead>Product Name</TableHead>
+                  <TableHead>Product Category</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {showNoDataMessage ? (
+                  <TableRow>
+                    <TableCell>No Data</TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </ScrollArea>
+                ) : (
+                  filteredProductList.map((item: Product) => (
+                    <TableRow key={item._id}>
+                      <TableCell className="font-medium">
+                        {item.productNumber}
+                      </TableCell>
+                      <TableCell>{item.productName}</TableCell>
+                      <TableCell>{item.productCategory.categoryName}</TableCell>
+                      <TableCell className="flex items-center">
+                        <ModalDetailProduct product={item._id} />
+                        <ModalUploadPhoto product={item} />
+                        <ModalUpdateProduct product={item} />
+
+                        <div className="has-tooltip">
+                          <Trash2
+                            className="cursor-pointer text-red-500"
+                            onClick={() => {
+                              setOpen(true);
+                              setDeleteId(item._id);
+                            }}
+                          />
+                          <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                            Delete
+                          </span>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        )}
       </div>
     </>
   );
