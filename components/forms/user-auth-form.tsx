@@ -72,7 +72,9 @@ export default function UserAuthForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Button className='ml-auto w-full' type='submit'>
+        <Button
+          className='ml-auto w-full bg-blue-700 dark:text-white hover:dark:text-black'
+          type='submit'>
           Continue
         </Button>
       </form>
