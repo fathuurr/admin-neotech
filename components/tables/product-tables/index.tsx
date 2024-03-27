@@ -43,7 +43,9 @@ const ProductTable = () => {
   }, []);
 
   const filteredProductList = productList.filter((item: Product) =>
-    new RegExp(searchTerm, 'i').test(item.productName + item.productNumber)
+    new RegExp(searchTerm, 'i').test(
+      item.productName + item.productNumber + item.serialNumber
+    )
   );
 
   const showNoDataMessage =
