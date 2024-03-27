@@ -12,10 +12,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
-import ModalUploadPhoto from '@/components/modal/product/ModalUploadPhoto';
 import { ModalUpdateProduct } from '@/components/modal/product/ModalUpdateProduct';
 import { Loader2, ScrollText, Trash2 } from 'lucide-react';
-import ModalDetailProduct from '@/components/modal/product/ModalDetailProduct';
 import { AlertModal } from '@/components/modal/alert-modal';
 import { useToast } from '@/components/ui/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
