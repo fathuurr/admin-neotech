@@ -107,10 +107,17 @@ const ProductTable = () => {
                       <TableCell>{item.productName}</TableCell>
                       <TableCell>{item.productCategory.categoryName}</TableCell>
                       <TableCell className='flex items-center'>
-                        <ScrollText
-                          className='cursor-pointer mr-2 text-emerald-500'
-                          onClick={() => push(`/dashboard/product/${item._id}`)}
-                        />
+                        <div className='has-tooltip'>
+                          <ScrollText
+                            className='cursor-pointer mr-2 text-emerald-500'
+                            onClick={() =>
+                              push(`/dashboard/product/${item._id}`)
+                            }
+                          />
+                          <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12'>
+                            Detail
+                          </span>
+                        </div>
 
                         {/* <ModalUploadPhoto product={item} /> */}
                         <ModalUpdateProduct product={item} />
