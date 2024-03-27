@@ -1,7 +1,7 @@
-"use client";
-import { deleteProduct, getProduct } from "@/service/product";
-import { Product } from "@/types/product";
-import { useCallback, useEffect, useState } from "react";
+'use client';
+import { deleteProduct, getProduct } from '@/service/product';
+import { Product } from '@/types/product';
+import { useCallback, useEffect, useState } from 'react';
 
 import {
   Table,
@@ -10,23 +10,25 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import ModalUploadPhoto from "@/components/modal/product/ModalUploadPhoto";
-import { ModalUpdateProduct } from "@/components/modal/product/ModalUpdateProduct";
-import { Loader2, Trash2 } from "lucide-react";
-import ModalDetailProduct from "@/components/modal/product/ModalDetailProduct";
-import { AlertModal } from "@/components/modal/alert-modal";
-import { useToast } from "@/components/ui/use-toast";
-import { ScrollArea } from "@/components/ui/scroll-area";
+} from '@/components/ui/table';
+import { Input } from '@/components/ui/input';
+import ModalUploadPhoto from '@/components/modal/product/ModalUploadPhoto';
+import { ModalUpdateProduct } from '@/components/modal/product/ModalUpdateProduct';
+import { Loader2, ScrollText, Trash2 } from 'lucide-react';
+import ModalDetailProduct from '@/components/modal/product/ModalDetailProduct';
+import { AlertModal } from '@/components/modal/alert-modal';
+import { useToast } from '@/components/ui/use-toast';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useRouter } from 'next/navigation';
 
 const ProductTable = () => {
   const { toast } = useToast();
   const [productList, setProductList] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [open, setOpen] = useState(false);
-  const [deleteId, setDeleteId] = useState("");
+  const [deleteId, setDeleteId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { push } = useRouter();
 
   const getProductList = useCallback(async () => {
     setIsLoading(true);
@@ -41,11 +43,11 @@ const ProductTable = () => {
   }, []);
 
   const filteredProductList = productList.filter((item: Product) =>
-    new RegExp(searchTerm, "i").test(item.productName + item.productNumber),
+    new RegExp(searchTerm, 'i').test(item.productName + item.productNumber)
   );
 
   const showNoDataMessage =
-    filteredProductList.length === 0 && searchTerm !== "";
+    filteredProductList.length === 0 && searchTerm !== '';
 
   const handleDelete = async () => {
     const response = await deleteProduct(deleteId);
@@ -55,7 +57,7 @@ const ProductTable = () => {
       });
     } else {
       toast({
-        title: "Berhasil delete product",
+        title: 'Berhasil delete product',
       });
       window.location.reload();
     }
@@ -68,22 +70,22 @@ const ProductTable = () => {
         onClose={() => setOpen(false)}
         onConfirm={handleDelete}
       />
-      <div className="container mx-auto pt-8">
+      <div className='container mx-auto pt-8'>
         <Input
-          type="text"
-          placeholder="Search..."
+          type='text'
+          placeholder='Search...'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
         {isLoading ? (
-          <div className="flex items-center justify-center mt-10">
-            <Loader2 className="animate-spin" size={50} />
+          <div className='flex items-center justify-center mt-10'>
+            <Loader2 className='animate-spin' size={50} />
           </div>
         ) : (
-          <ScrollArea className="rounded-md border h-[calc(80vh-220px)] mt-7">
+          <ScrollArea className='rounded-md border h-[calc(80vh-220px)] mt-7'>
             <Table>
-              <TableHeader className="sticky top-0 bg-secondary">
+              <TableHeader className='sticky top-0 bg-secondary'>
                 <TableRow>
                   <TableHead>Product Number</TableHead>
                   <TableHead>Product Name</TableHead>
@@ -99,25 +101,29 @@ const ProductTable = () => {
                 ) : (
                   filteredProductList.map((item: Product) => (
                     <TableRow key={item._id}>
-                      <TableCell className="font-medium">
+                      <TableCell className='font-medium'>
                         {item.productNumber}
                       </TableCell>
                       <TableCell>{item.productName}</TableCell>
                       <TableCell>{item.productCategory.categoryName}</TableCell>
-                      <TableCell className="flex items-center">
-                        <ModalDetailProduct product={item._id} />
-                        <ModalUploadPhoto product={item} />
+                      <TableCell className='flex items-center'>
+                        <ScrollText
+                          className='cursor-pointer mr-2 text-emerald-500'
+                          onClick={() => push(`/dashboard/product/${item._id}`)}
+                        />
+
+                        {/* <ModalUploadPhoto product={item} /> */}
                         <ModalUpdateProduct product={item} />
 
-                        <div className="has-tooltip">
+                        <div className='has-tooltip'>
                           <Trash2
-                            className="cursor-pointer text-red-500"
+                            className='cursor-pointer text-red-500'
                             onClick={() => {
                               setOpen(true);
                               setDeleteId(item._id);
                             }}
                           />
-                          <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+                          <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12'>
                             Delete
                           </span>
                         </div>
