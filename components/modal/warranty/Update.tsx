@@ -88,7 +88,6 @@ const ModalUpdateWarranty = ({ warrantyId }: any) => {
           <Input
             type='date'
             className='w-1/2'
-            value={formatInputDate(warrantyId.receiptDate)}
             onChange={(e) =>
               setData((prevState) => ({
                 ...prevState,

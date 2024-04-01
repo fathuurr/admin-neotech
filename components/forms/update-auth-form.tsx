@@ -1,21 +1,30 @@
-"use client";
-import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
+'use client';
+import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Button } from "../ui/button";
-import { UpdateUser } from "@/types/user";
-import { updateUser } from "@/service/auth";
-import { toast } from "../ui/use-toast";
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Button } from '../ui/button';
+import { UpdateUser } from '@/types/user';
+import { updateUser } from '@/service/auth';
+import { toast } from '../ui/use-toast';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 
 const UpdateForm = () => {
   const [updateProfile, setUpdateProfile] = useState<UpdateUser>({
-    namaLengkap: "",
-    noTelp: "",
-    email: "",
-    username: "",
+    namaLengkap: '',
+    noTelp: '',
+    email: '',
+    role: '',
+    username: '',
   });
 
   const onSubmit = async () => {
@@ -27,27 +36,27 @@ const UpdateForm = () => {
     try {
       if (response.error) {
         toast({
-          title: "Error updating",
+          title: 'Error updating',
           description: response.message,
-          className: "bg-red-500",
+          className: 'bg-red-500',
         });
       } else {
         toast({
-          title: "Successfully updated",
-          className: "bg-green-500",
+          title: 'Successfully updated',
+          className: 'bg-green-500',
         });
         window.location.reload();
       }
     } catch (error: any) {
       toast({
         title: error.message,
-        className: "bg-red-500",
+        className: 'bg-red-500',
       });
     }
   };
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     if (token) {
       try {
         const decodedToken: any = jwtDecode(token);
@@ -55,24 +64,25 @@ const UpdateForm = () => {
           namaLengkap: decodedToken.namaLengkap,
           noTelp: decodedToken.noTelp,
           email: decodedToken.email,
+          role: decodedToken.role,
           username: decodedToken.username,
         };
         setUpdateProfile(userData);
       } catch (error) {
         toast({
-          title: "Error decoding token",
+          title: 'Error decoding token',
         });
       }
     }
   }, []);
 
   return (
-    <div className="container space-y-3">
-      <div className="">
+    <div className='container space-y-3'>
+      <div className=''>
         <Label>Nama Lengkap</Label>
         <Input
           value={updateProfile.namaLengkap}
-          type="text"
+          type='text'
           onChange={(e) =>
             setUpdateProfile((prevState) => ({
               ...prevState,
@@ -82,11 +92,33 @@ const UpdateForm = () => {
         />
       </div>
 
-      <div className="">
+      <div className=''>
+        <Label>Role</Label>
+        <Select
+          value={updateProfile.role}
+          onValueChange={(value) =>
+            setUpdateProfile((prevState) => ({
+              ...prevState,
+              role: value,
+            }))
+          }>
+          <SelectTrigger disabled>
+            <SelectValue placeholder='Role' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value='admin'>Admin</SelectItem>
+              <SelectItem value='superAdmin'>Super Admin</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className=''>
         <Label>Nomor Telepon</Label>
         <Input
           value={updateProfile.noTelp}
-          type="text"
+          type='text'
           onChange={(e) =>
             setUpdateProfile((prevState) => ({
               ...prevState,
@@ -96,11 +128,11 @@ const UpdateForm = () => {
         />
       </div>
 
-      <div className="">
+      <div className=''>
         <Label>Email</Label>
         <Input
           value={updateProfile.email}
-          type="email"
+          type='email'
           onChange={(e) =>
             setUpdateProfile((prevState) => ({
               ...prevState,
@@ -110,11 +142,11 @@ const UpdateForm = () => {
         />
       </div>
 
-      <div className="">
+      <div className=''>
         <Label>Username</Label>
         <Input
           value={updateProfile.username}
-          type="text"
+          type='text'
           onChange={(e) =>
             setUpdateProfile((prevState) => ({
               ...prevState,
@@ -124,7 +156,7 @@ const UpdateForm = () => {
         />
       </div>
 
-      <Button onClick={onSubmit} className="bg-blue-500 hover:bg-blue-300">
+      <Button onClick={onSubmit} className='bg-blue-500 hover:bg-blue-300'>
         Update
       </Button>
     </div>

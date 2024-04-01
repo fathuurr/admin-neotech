@@ -13,6 +13,7 @@ export type UpdateUser = {
   namaLengkap: string;
   noTelp: string;
   email: string;
+  role: string;
   username: string;
 };
 
