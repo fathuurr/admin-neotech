@@ -29,14 +29,6 @@ export default function page() {
   }, []);
 
   useEffect(() => {
-    const token = Cookies.get('token');
-
-    if (!token) {
-      router.push('/');
-    }
-  }, [router]);
-
-  useEffect(() => {
     productList();
     userList();
   }, []);
