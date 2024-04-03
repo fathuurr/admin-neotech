@@ -19,6 +19,14 @@ import { AlertModal } from '@/components/modal/alert-modal';
 import { toast } from '@/components/ui/use-toast';
 import { ModalUpdateUser } from '@/components/modal/user/UpdateUser';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 
 interface UserTypes {
   _id: string;
@@ -29,12 +37,15 @@ interface UserTypes {
   role: string;
 }
 
+const PAGE_SIZE = 10;
+
 const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [loggedInUserId, setLoggedInUserId] = useState('');
 
   const fetchDataUser = useCallback(async () => {
@@ -50,13 +61,11 @@ const UserTable = () => {
 
   useEffect(() => {
     const token = Cookies.get('token');
-    // Jika token tersedia, lakukan proses untuk mendapatkan informasi pengguna yang sedang login
     if (token) {
-      // Misalnya, kita ambil ID pengguna dari token
-      const decodedToken: any = jwtDecode(token); // Fungsi untuk mendekode token
+      const decodedToken: any = jwtDecode(token);
       const loggedInUserId = {
         id: decodedToken.id,
-      }; // Mendapatkan ID pengguna dari token
+      };
       setLoggedInUserId(loggedInUserId.id);
     }
   }, []);
@@ -70,6 +79,15 @@ const UserTable = () => {
       user[field].toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
+
+  const pageCount = Math.ceil(filteredUsers.length / PAGE_SIZE);
+
+  const paginatedUserList = filteredUsers.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
+  const showNoDataMessage = filteredUsers.length === 0 && searchTerm !== '';
 
   const handleDelete = async () => {
     const response = await deleteUser(deleteId);
@@ -105,52 +123,108 @@ const UserTable = () => {
             <Loader2 className='animate-spin' size={50} />
           </div>
         ) : (
-          <ScrollArea className='rounded-md border h-[calc(80vh-220px)] mt-7'>
-            <Table>
-              <TableHeader className='sticky top-0 bg-secondary'>
-                <TableRow>
-                  <TableHead>Nama Lengkap</TableHead>
-                  <TableHead>No Telepon</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Username</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredUsers.map((user: UserTypes) => (
-                  <TableRow key={user._id}>
-                    <TableCell>{user.namaLengkap}</TableCell>
-                    <TableCell>{user.noTelp}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.username}</TableCell>
-                    <TableCell>{user.role}</TableCell>
-                    <TableCell className='flex items-center'>
-                      {loggedInUserId === user._id ? (
-                        <Ban />
-                      ) : (
-                        <>
-                          <ModalUpdateUser userId={user} />
-                          <div className='has-tooltip'>
-                            <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12'>
-                              Delete User
-                            </span>
-                            <Trash2
-                              onClick={() => {
-                                setOpen(true);
-                                setDeleteId(user._id);
-                              }}
-                              className='text-red-500 cursor-pointer'
-                            />
-                          </div>
-                        </>
-                      )}
-                    </TableCell>
+          <>
+            <ScrollArea className='rounded-md border h-[calc(80vh-220px)] mt-7'>
+              <Table>
+                <TableHeader className='sticky top-0 bg-secondary'>
+                  <TableRow>
+                    <TableHead>Nama Lengkap</TableHead>
+                    <TableHead>No Telepon</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Username</TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </ScrollArea>
+                </TableHeader>
+                <TableBody>
+                  {showNoDataMessage ? (
+                    <TableRow>
+                      <TableCell>No Data</TableCell>
+                    </TableRow>
+                  ) : (
+                    paginatedUserList.map((user: UserTypes) => (
+                      <TableRow key={user._id}>
+                        <TableCell>{user.namaLengkap}</TableCell>
+                        <TableCell>{user.noTelp}</TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>{user.username}</TableCell>
+                        <TableCell>{user.role}</TableCell>
+                        <TableCell className='flex items-center'>
+                          {loggedInUserId === user._id ? (
+                            <Ban />
+                          ) : (
+                            <>
+                              <ModalUpdateUser userId={user} />
+                              <div className='has-tooltip'>
+                                <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12'>
+                                  Delete User
+                                </span>
+                                <Trash2
+                                  onClick={() => {
+                                    setOpen(true);
+                                    setDeleteId(user._id);
+                                  }}
+                                  className='text-red-500 cursor-pointer'
+                                />
+                              </div>
+                            </>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </ScrollArea>
+
+            <Pagination className='flex justify-end mt-4'>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    className={`${
+                      currentPage === 1
+                        ? 'pointer-events-none opacity-50'
+                        : 'cursor-pointer'
+                    }`}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                  />
+                </PaginationItem>
+                <PaginationItem>
+                  {Array.from({ length: pageCount }, (_, i) => (
+                    <>
+                      {(i === 0 ||
+                        i === pageCount - 1 ||
+                        (i >= currentPage - 2 && i <= currentPage + 1)) && (
+                        <PaginationLink
+                          key={i}
+                          isActive={currentPage === i + 1}
+                          onClick={() => setCurrentPage(i + 1)}>
+                          {i + 1}
+                        </PaginationLink>
+                      )}
+
+                      {i === currentPage - 3 &&
+                        i !== 0 &&
+                        i !== pageCount - 3 && (
+                          <span className='mx-1'>...</span>
+                        )}
+                    </>
+                  ))}
+                </PaginationItem>
+
+                <PaginationItem>
+                  <PaginationNext
+                    className={`${
+                      currentPage === pageCount
+                        ? 'pointer-events-none opacity-50'
+                        : 'cursor-pointer'
+                    }`}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </>
         )}
       </div>
     </>

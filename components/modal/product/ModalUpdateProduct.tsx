@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { updateProduct } from "@/service/product";
+import { useEffect, useState } from 'react';
+import { updateProduct } from '@/service/product';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
 import {
   Dialog,
@@ -13,20 +13,20 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
-import { Textarea } from "../../ui/textarea";
-import { Pencil } from "lucide-react";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
+import { Textarea } from '../../ui/textarea';
+import { Pencil } from 'lucide-react';
 
 export function ModalUpdateProduct({ product }: any) {
   const { toast } = useToast();
 
   const [updateData, setUpdateData] = useState({
-    productNumber: "",
-    productName: "",
-    productDescription: "",
-    productWarranty: "",
+    productNumber: '',
+    productName: '',
+    productDescription: '',
+    productWarranty: '',
   });
 
   useEffect(() => {
@@ -40,21 +40,21 @@ export function ModalUpdateProduct({ product }: any) {
       const response = await updateProduct(updateData, product._id);
       if (response.error) {
         toast({
-          title: "Error updating product",
+          title: 'Error updating product',
           description: response.message,
-          className: "bg-red-500",
+          className: 'bg-red-500',
         });
       } else {
         toast({
-          title: "Successfully updated",
-          className: "bg-green-500",
+          title: 'Successfully updated',
+          className: 'bg-green-500',
         });
         window.location.reload();
       }
     } catch (error: any) {
       toast({
         title: error.message,
-        className: "bg-red-500",
+        className: 'bg-red-500',
       });
     }
   };
@@ -62,9 +62,9 @@ export function ModalUpdateProduct({ product }: any) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="has-tooltip">
-          <Pencil className="cursor-pointer mr-2 text-orange-500" />
-          <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12">
+        <div className='has-tooltip'>
+          <Pencil className='cursor-pointer mr-2 text-orange-500' />
+          <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-18'>
             Update
           </span>
         </div>
@@ -76,9 +76,9 @@ export function ModalUpdateProduct({ product }: any) {
             Update your product here. Click save when youre done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className='grid gap-4 py-4'>
           <Input
-            type="text"
+            type='text'
             value={updateData.productNumber}
             onChange={(e) =>
               setUpdateData((prevState) => ({
@@ -86,11 +86,11 @@ export function ModalUpdateProduct({ product }: any) {
                 productNumber: e.target.value,
               }))
             }
-            placeholder="Product Number"
+            placeholder='Product Number'
           />
 
           <Input
-            type="text"
+            type='text'
             value={updateData.productName}
             onChange={(e) =>
               setUpdateData((prevState) => ({
@@ -98,7 +98,7 @@ export function ModalUpdateProduct({ product }: any) {
                 productName: e.target.value,
               }))
             }
-            placeholder="Product Name"
+            placeholder='Product Name'
           />
 
           <Textarea
@@ -109,13 +109,13 @@ export function ModalUpdateProduct({ product }: any) {
               }))
             }
             value={updateData.productDescription}
-            placeholder="Description"
+            placeholder='Description'
             cols={30}
             rows={10}
           />
 
           <Input
-            type="number"
+            type='number'
             value={updateData.productWarranty}
             onChange={(e) =>
               setUpdateData((prevState) => ({
@@ -123,11 +123,11 @@ export function ModalUpdateProduct({ product }: any) {
                 productWarranty: e.target.value,
               }))
             }
-            placeholder="Product Warranty"
+            placeholder='Product Warranty'
           />
         </div>
         <DialogFooter>
-          <Button onClick={onSubmit} type="submit">
+          <Button onClick={onSubmit} type='submit'>
             Save
           </Button>
         </DialogFooter>

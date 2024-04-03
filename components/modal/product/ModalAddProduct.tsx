@@ -1,5 +1,5 @@
-"use client";
-import { Button } from "@/components/ui/button";
+'use client';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,24 +8,24 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Plus } from 'lucide-react';
 
-import { getCategoryProduct, postProduct } from "@/service/product";
-import { useCallback, useEffect, useState } from "react";
-import Select from "react-select";
-import { Textarea } from "../../ui/textarea";
-import { toast } from "@/components/ui/use-toast";
+import { getCategoryProduct, postProduct } from '@/service/product';
+import { useCallback, useEffect, useState } from 'react';
+import Select from 'react-select';
+import { Textarea } from '../../ui/textarea';
+import { toast } from '@/components/ui/use-toast';
 
 export function ModalAddProduct() {
   const [categoryList, setCategoryList] = useState([]);
   const [addProduct, setAddProduct] = useState({
-    productNumber: "",
-    productCategory: "",
-    productName: "",
-    productDescription: "",
-    productWarranty: "",
+    productNumber: '',
+    productCategory: '',
+    productName: '',
+    productDescription: '',
+    productWarranty: '',
   });
 
   const getCategoryProductList = useCallback(async () => {
@@ -51,20 +51,20 @@ export function ModalAddProduct() {
 
     if (!addProduct) {
       toast({
-        title: "Please complete the form",
-        className: "bg-red-500",
+        title: 'Please complete the form',
+        className: 'bg-red-500',
       });
     } else {
       const response = await postProduct(data);
       if (response.error) {
         toast({
           title: response.message,
-          className: "bg-red-500",
+          className: 'bg-red-500',
         });
       } else {
         toast({
-          title: "Berhasil menambahkan product",
-          className: "bg-green-500",
+          title: 'Berhasil menambahkan product',
+          className: 'bg-green-500',
         });
 
         window.location.reload();
@@ -74,21 +74,21 @@ export function ModalAddProduct() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
-          <Plus className="mr-2" />
+        <Button variant='outline'>
+          <Plus className='mr-2' />
           Add
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-w-[50%]">
+      <DialogContent className='min-w-[50%]'>
         <DialogHeader>
           <DialogTitle>Add your product</DialogTitle>
           <DialogDescription>
             Add your product here. Click save when youre done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className='grid gap-4 py-4'>
           <Input
-            type="text"
+            type='text'
             value={addProduct.productNumber}
             onChange={(e) =>
               setAddProduct((prevState) => ({
@@ -96,28 +96,29 @@ export function ModalAddProduct() {
                 productNumber: e.target.value,
               }))
             }
-            placeholder="Product Number"
+            placeholder='Product Number'
           />
 
           <Select
-            className="my-react-select-container rounded-lg"
-            classNamePrefix={"my-react-select"}
+            className='my-react-select-container rounded-lg'
+            classNamePrefix={'my-react-select'}
             value={formattedCategories.find(
-              (category) => category.value === addProduct.productCategory,
+              (category) => category.value === addProduct.productCategory
             )}
             onChange={(selectedOption: any) =>
               setAddProduct((prevState) => ({
                 ...prevState,
-                productCategory: selectedOption ? selectedOption.value : "",
+                productCategory: selectedOption ? selectedOption.value : '',
               }))
             }
+            placeholder='Select Category'
             options={formattedCategories}
             isSearchable={true}
             isClearable={true}
           />
 
           <Input
-            type="text"
+            type='text'
             value={addProduct.productName}
             onChange={(e) =>
               setAddProduct((prevState) => ({
@@ -125,7 +126,7 @@ export function ModalAddProduct() {
                 productName: e.target.value,
               }))
             }
-            placeholder="Product Name"
+            placeholder='Product Name'
           />
 
           <Textarea
@@ -136,13 +137,13 @@ export function ModalAddProduct() {
               }))
             }
             value={addProduct.productDescription}
-            placeholder="Description"
+            placeholder='Description'
             cols={30}
             rows={5}
           />
 
           <Input
-            type="number"
+            type='number'
             value={addProduct.productWarranty}
             onChange={(e) =>
               setAddProduct((prevState) => ({
@@ -150,11 +151,11 @@ export function ModalAddProduct() {
                 productWarranty: e.target.value,
               }))
             }
-            placeholder="Product Warranty"
+            placeholder='Product Warranty'
           />
         </div>
         <DialogFooter>
-          <Button onClick={onSubmit} type="submit">
+          <Button onClick={onSubmit} type='submit'>
             Save
           </Button>
         </DialogFooter>
