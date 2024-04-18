@@ -57,52 +57,54 @@ const ModalUpdateWarranty = ({ warrantyId }: any) => {
   }
 
   return (
-    <Dialog>
-      <DialogTrigger className='has-tooltip' asChild>
-        <div className='has-tooltip'>
-          <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12'>
-            Update warranty
-          </span>
-          <Pencil className='cursor-pointer text-orange-500' />
-        </div>
-      </DialogTrigger>
+    <>
+      <Dialog>
+        <DialogTrigger className='has-tooltip' asChild>
+          <div className='has-tooltip'>
+            <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12'>
+              Update warranty
+            </span>
+            <Pencil className='cursor-pointer text-orange-500' />
+          </div>
+        </DialogTrigger>
 
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Update your warranty</DialogTitle>
-          <DialogDescription>Click save when youre done</DialogDescription>
-        </DialogHeader>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Update your warranty</DialogTitle>
+            <DialogDescription>Click save when youre done</DialogDescription>
+          </DialogHeader>
 
-        <div className='grid gap-4 py-4'>
-          <Input
-            type='text'
-            defaultValue={warrantyId.serialNumber}
-            onChange={(e) =>
-              setData((prevState) => ({
-                ...prevState,
-                serialNumber: e.target.value,
-              }))
-            }
-          />
+          <div className='grid gap-4 py-4'>
+            <Input
+              type='text'
+              defaultValue={warrantyId.serialNumber}
+              onChange={(e) =>
+                setData((prevState) => ({
+                  ...prevState,
+                  serialNumber: e.target.value,
+                }))
+              }
+            />
 
-          <Input
-            type='date'
-            className='w-1/2'
-            onChange={(e) =>
-              setData((prevState) => ({
-                ...prevState,
-                receiptDate: e.target.value,
-              }))
-            }
-          />
-        </div>
-        <DialogFooter>
-          <Button type='submit' onClick={onSubmit}>
-            Update
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            <Input
+              type='date'
+              className='w-1/2'
+              onChange={(e) =>
+                setData((prevState) => ({
+                  ...prevState,
+                  receiptDate: e.target.value,
+                }))
+              }
+            />
+          </div>
+          <DialogFooter>
+            <Button type='submit' onClick={onSubmit}>
+              Update
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
