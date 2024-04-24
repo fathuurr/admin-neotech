@@ -115,7 +115,7 @@ const UserTable = () => {
         <Input
           value={searchTerm}
           onChange={handleSearch}
-          placeholder='Search...'
+          placeholder='Search by username...'
         />
 
         {isLoading ? (

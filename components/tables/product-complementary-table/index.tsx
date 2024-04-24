@@ -126,7 +126,7 @@ const ProductComplementaryTable = () => {
       <div className='container mx-auto pt-8'>
         <Input
           type='text'
-          placeholder='Search...'
+          placeholder='Search by serial number and mac address...'
           value={searchTerm}
           onChange={handleInputSearch}
         />

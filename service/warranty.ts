@@ -1,14 +1,16 @@
 import callAPI from '@/config/api';
 import { UpdateWarranty } from '@/types/warranty';
-import axios from 'axios';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getWarranty() {
-  const response = await axios.get(`${URL}/warranty-product`);
-  const axiosResponse = response.data;
+  const url = `${URL}/warranty-product`;
 
-  return axiosResponse.data;
+  return callAPI({
+    url,
+    method: 'GET',
+    token: true,
+  });
 }
 
 export async function deleteWarranty(id: string) {

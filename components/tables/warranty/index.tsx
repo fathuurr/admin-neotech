@@ -49,7 +49,7 @@ const WarrantyTable = () => {
     setIsLoading(true);
     const data = await getWarranty();
 
-    setWarrantyList(data);
+    setWarrantyList(data.data.data);
     setIsLoading(false);
   }, []);
 
@@ -132,7 +132,7 @@ const WarrantyTable = () => {
       <div className='container mx-auto'>
         <Input
           className='mb-4'
-          placeholder='Search...'
+          placeholder='Search by serial number...'
           type='text'
           onChange={(e) => setSearchTerm(e.target.value)}
         />

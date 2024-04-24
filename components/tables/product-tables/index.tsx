@@ -89,7 +89,7 @@ const ProductTable = () => {
       <div className='container mx-auto pt-8'>
         <Input
           type='text'
-          placeholder='Search...'
+          placeholder='Search by product name and product number...'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
