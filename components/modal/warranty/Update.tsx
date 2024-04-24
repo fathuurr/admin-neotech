@@ -20,6 +20,8 @@ import { UpdateWarranty } from '@/types/warranty';
 
 const ModalUpdateWarranty = ({ warrantyId }: any) => {
   const [data, setData] = useState<UpdateWarranty>({
+    phoneNumber: '',
+    email: '',
     serialNumber: '',
     receiptDate: '',
   });
@@ -32,6 +34,8 @@ const ModalUpdateWarranty = ({ warrantyId }: any) => {
 
   const onSubmit = async () => {
     const requestData = {
+      phoneNumber: data.phoneNumber,
+      email: data.email,
       serialNumber: data.serialNumber,
       receiptDate: data.receiptDate,
     };
@@ -49,12 +53,6 @@ const ModalUpdateWarranty = ({ warrantyId }: any) => {
       window.location.reload();
     }
   };
-
-  function formatInputDate(dateString: string) {
-    const date = new Date(dateString).toJSON()?.split('T')[0];
-
-    return date;
-  }
 
   return (
     <>
@@ -75,6 +73,28 @@ const ModalUpdateWarranty = ({ warrantyId }: any) => {
           </DialogHeader>
 
           <div className='grid gap-4 py-4'>
+            <Input
+              type='text'
+              defaultValue={warrantyId.phoneNumber}
+              onChange={(e) =>
+                setData((prevState) => ({
+                  ...prevState,
+                  phoneNumber: e.target.value,
+                }))
+              }
+            />
+
+            <Input
+              type='text'
+              defaultValue={warrantyId.email}
+              onChange={(e) =>
+                setData((prevState) => ({
+                  ...prevState,
+                  email: e.target.value,
+                }))
+              }
+            />
+
             <Input
               type='text'
               defaultValue={warrantyId.serialNumber}

@@ -14,6 +14,8 @@ export interface Warranty {
 }
 
 export interface UpdateWarranty {
+  phoneNumber: string;
+  email: string;
   serialNumber: string;
   receiptDate: string;
 }
