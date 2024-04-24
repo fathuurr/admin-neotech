@@ -43,25 +43,25 @@ export default function page() {
         </div>
 
         <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-2'>
-          <Card>
+          <Card className='bg-lime-500 dark:text-black'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
               <CardTitle className='text-sm font-medium'>Product</CardTitle>
               <ShoppingCart />
             </CardHeader>
             <CardContent>
               <div className='text-2xl font-bold'> +{product.length} </div>
-              <p className='text-xs text-muted-foreground'>Total Product</p>
+              <p className='text-xs  dark:text-black'>Total Product</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className='bg-lime-500 dark:text-black'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
               <CardTitle className='text-sm font-medium'>Users</CardTitle>
               <User />
             </CardHeader>
             <CardContent>
               <div className='text-2xl font-bold'> +{user.length} </div>
-              <p className='text-xs text-muted-foreground'>Total User</p>
+              <p className='text-xs  dark:text-black'>Total User</p>
             </CardContent>
           </Card>
         </div>

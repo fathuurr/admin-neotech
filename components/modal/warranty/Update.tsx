@@ -64,7 +64,7 @@ const ModalUpdateWarranty = ({ warrantyId }: any) => {
             <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12'>
               Update warranty
             </span>
-            <Pencil className='cursor-pointer text-orange-500' />
+            <Pencil className='cursor-pointer text-orange-500 h-5' />
           </div>
         </DialogTrigger>
 

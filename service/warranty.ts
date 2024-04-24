@@ -1,6 +1,6 @@
-import callAPI from "@/config/api";
-import { UpdateWarranty } from "@/types/warranty";
-import axios from "axios";
+import callAPI from '@/config/api';
+import { UpdateWarranty } from '@/types/warranty';
+import axios from 'axios';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -16,7 +16,7 @@ export async function deleteWarranty(id: string) {
 
   return callAPI({
     url,
-    method: "DELETE",
+    method: 'DELETE',
     token: true,
   });
 }
@@ -26,8 +26,27 @@ export async function updateWarranty(data: UpdateWarranty, id: string) {
 
   return callAPI({
     url,
-    method: "PUT",
+    method: 'PUT',
     token: true,
     data,
+  });
+}
+
+export async function approveWarranty(id: string) {
+  const url = `${URL}/warranty-product/${id}/approve`;
+
+  return callAPI({
+    url,
+    method: 'PUT',
+    token: true,
+  });
+}
+export async function rejectWarranty(id: string) {
+  const url = `${URL}/warranty-product/${id}/reject`;
+
+  return callAPI({
+    url,
+    method: 'PUT',
+    token: true,
   });
 }

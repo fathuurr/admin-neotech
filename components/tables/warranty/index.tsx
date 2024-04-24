@@ -22,9 +22,14 @@ import {
 } from '@/components/ui/table';
 import { toast } from '@/components/ui/use-toast';
 import { formattedDate } from '@/lib/utils';
-import { deleteWarranty, getWarranty } from '@/service/warranty';
+import {
+  approveWarranty,
+  deleteWarranty,
+  getWarranty,
+  rejectWarranty,
+} from '@/service/warranty';
 import { Warranty } from '@/types/warranty';
-import { Loader2, Trash } from 'lucide-react';
+import { Check, Loader2, Trash, X } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -34,6 +39,8 @@ const WarrantyTable = () => {
   const [warrantyList, setWarrantyList] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteId, setDeleteId] = useState('');
+  const [approveId, setApproveId] = useState('');
+  const [rejectId, setRejectId] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -65,6 +72,38 @@ const WarrantyTable = () => {
     }
   };
 
+  const handleApprove = async () => {
+    const response = await approveWarranty(approveId);
+
+    if (response.error) {
+      toast({
+        title: response.message,
+      });
+    } else {
+      toast({
+        title: 'Berhasil approve',
+        className: 'bg-green-500 text-white',
+      });
+      window.location.reload();
+    }
+  };
+
+  const handleReject = async () => {
+    const response = await rejectWarranty(rejectId);
+
+    if (response.error) {
+      toast({
+        title: response.message,
+      });
+    } else {
+      toast({
+        title: 'Berhasil Reject',
+        className: 'bg-red-500 text-white',
+      });
+      window.location.reload();
+    }
+  };
+
   const filteredWarrantyList = warrantyList.filter((item: Warranty) =>
     item.serialNumber.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -84,7 +123,11 @@ const WarrantyTable = () => {
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        onConfirm={handleDelete}
+        onConfirm={() => {
+          handleApprove();
+          handleDelete();
+          handleReject();
+        }}
       />
       <div className='container mx-auto'>
         <Input
@@ -106,9 +149,9 @@ const WarrantyTable = () => {
                   <TableRow>
                     <TableHead>Serial Number</TableHead>
                     <TableHead>Product Name</TableHead>
-                    <TableHead>Warranty</TableHead>
-                    <TableHead>Warranty End</TableHead>
                     <TableHead>Receipt Date</TableHead>
+                    <TableHead>Warranty End</TableHead>
+                    <TableHead> Status </TableHead>
                     <TableHead>Receipt</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
@@ -124,15 +167,18 @@ const WarrantyTable = () => {
                         <TableRow key={item._id}>
                           <TableCell> {item.serialNumber} </TableCell>
                           <TableCell> {item.product.productName} </TableCell>
-                          <TableCell> {item.warranty} </TableCell>
                           <TableCell>
-                            {' '}
-                            {formattedDate(item.warrantyEnd)}{' '}
+                            {formattedDate(item.receiptDate)}
                           </TableCell>
+
                           <TableCell>
-                            {' '}
-                            {formattedDate(item.receiptDate)}{' '}
+                            {formattedDate(item.warrantyEnd)}
                           </TableCell>
+
+                          <TableCell>
+                            {item.isValid ? '🟢 Approve' : '🔴 Reject'}
+                          </TableCell>
+
                           <TableCell>
                             <Image
                               src={`${process.env.NEXT_PUBLIC_API_URL}/${item.receipt}`}
@@ -142,7 +188,42 @@ const WarrantyTable = () => {
                               className='rounded-md'
                             />
                           </TableCell>
-                          <TableCell className='flex items-center gap-3'>
+                          <TableCell className='flex items-center gap-1'>
+                            <div className='has-tooltip'>
+                              <Check
+                                onClick={() => {
+                                  setOpen(true);
+                                  setApproveId(item._id);
+                                }}
+                                className={`${
+                                  item.isValid === true
+                                    ? 'cursor-not-allowed text-green-300 h-5'
+                                    : 'text-green-500 cursor-pointer h-5'
+                                }`}
+                              />
+
+                              <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-16'>
+                                Approve
+                              </span>
+                            </div>
+
+                            <div className='has-tooltip'>
+                              <X
+                                className={`${
+                                  item.isValid === false
+                                    ? 'cursor-not-allowed text-red-300 h-5'
+                                    : 'text-red-500 cursor-pointer h-5'
+                                }`}
+                                onClick={() => {
+                                  setOpen(true);
+                                  setRejectId(item._id);
+                                }}
+                              />
+                              <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-16'>
+                                Reject
+                              </span>
+                            </div>
+
                             <ModalUpdateWarranty warrantyId={item} />
 
                             <div className='has-tooltip'>
@@ -151,9 +232,9 @@ const WarrantyTable = () => {
                                   setOpen(true);
                                   setDeleteId(item._id);
                                 }}
-                                className='text-red-500 cursor-pointer'
+                                className='text-red-500 cursor-pointer h-5'
                               />
-                              <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-12'>
+                              <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-black text-xs -mt-16'>
                                 Delete warranty
                               </span>
                             </div>
@@ -178,6 +259,7 @@ const WarrantyTable = () => {
                     onClick={() => setCurrentPage(currentPage - 1)}
                   />
                 </PaginationItem>
+
                 <PaginationItem>
                   {Array.from({ length: pageCount }, (_, i) => (
                     <>
